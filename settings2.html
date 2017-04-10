@@ -1,0 +1,257 @@
+<?php
+
+if(isset($_SESSION['login'])){
+	include("../../zugriff.php");
+
+	if(isset($_GET['profile'])){
+	$stmt=$mysqli->prepare("SELECT User_ID FROM CustomFeed Where ID=?");
+	$stmt->bind_param('s',$profile);
+	$profile=strip_tags($_GET['profile']);
+	$stmt->execute();
+	$result = $stmt->get_result();
+	foreach($result as $userdb){
+	if($userdb['User_ID']==$_SESSION['user']['ID']){
+	
+	
+		if(isset($_GET['n'])){
+			if($_GET['n']=='1'){
+				if(isset($_POST['f'])){
+				$stmti=$mysqli->prepare("Insert INTO Filter values('',?,?)");
+				$stmti->bind_param('ss',$profile,$filter);
+				$profile=strip_tags($_GET['profile']);
+				$filter=strip_tags($_POST['f']['fname']);
+				$stmti->execute();
+				}
+			
+			}
+			else if(isset($_GET['filter'])){
+			if($_GET['n']=='2'){
+				
+				
+				$stmt=$mysqli->prepare("SELECT CustomFeed_ID From Filter Where ID=?");
+				$stmt->bind_param('s',$filter);
+
+				$filter=strip_tags($_GET['filter']);
+				$stmt->execute();
+				$result=$stmt->get_result();
+				foreach($result as $fcheck){
+				if($fcheck['CustomFeed_ID']==$_GET['profile']){
+				$stmt=$mysqli->prepare("INSERT INTO FilterKeyword values(?,?,?,?)");
+				$stmt->bind_param('isii',$filter,$key,$SI,$invert);
+
+				$filter=strip_tags($_GET['filter']);
+				$key=strip_tags($_POST['f']['key']);
+				$SI=strip_tags($_POST['f']['searchindex']);
+				$invert=0;
+				if(isset($_POST['f']['not'])){$invert=1;}
+				$stmt->execute();
+				}
+				}
+				}
+			else if($_GET['n']=='3'){
+
+
+				$stmt=$mysqli->prepare("SELECT CustomFeed_ID From Filter Where ID=?");
+				$stmt->bind_param('s',$filter);
+
+				$filter=strip_tags($_GET['filter']);
+				$stmt->execute();
+				$result=$stmt->get_result();
+				foreach($result as $fcheck){
+				if($fcheck['CustomFeed_ID']==$_GET['profile']){
+				$stmt=$mysqli->prepare("INSERT INTO FilterURL values(?,?)");
+				$stmt->bind_param('ss',$filter,$src);
+
+				$filter=strip_tags($_GET['filter']);
+				$src=strip_tags($_POST['f']['src']);
+				$stmt->execute();
+				}
+				}
+				
+
+			}
+			else if($_GET['n']=='4'){
+				$stmt=$mysqli->prepare("SELECT CustomFeed_ID From Filter Where ID=?");
+				$stmt->bind_param('s',$filter);
+
+				$filter=strip_tags($_GET['filter']);
+				$stmt->execute();
+				$result=$stmt->get_result();
+				foreach($result as $fcheck){
+				if($fcheck['CustomFeed_ID']==$_GET['profile']){
+			
+				$stmt=$mysqli->prepare("DELETE FROM `Filter` WHERE ID=?");
+				$stmt->bind_param('s',$filter);
+
+				$filter=strip_tags($_GET['filter']);
+				$stmt->execute();
+				}else include 'hacker.html';}
+			}
+			else if($_GET['n']=='5'){
+				$stmt=$mysqli->prepare("SELECT CustomFeed_ID From Filter Where ID=?");
+				$stmt->bind_param('s',$filter);
+
+				$filter=strip_tags($_GET['filter']);
+				$stmt->execute();
+				$result=$stmt->get_result();
+				foreach($result as $fcheck){
+				if($fcheck['CustomFeed_ID']==$_GET['profile']){
+					if(isset($_GET['a'])){
+						$arr=unserialize(base64_decode(urldecode($_GET['a'])));
+						if($arr[0]==$_GET['filter']){
+							$stmt=$mysqli->prepare("DELETE FROM `Newsfeed`.`FilterKeyword` WHERE `FilterKeyword`.`Filter_ID` = ? AND `FilterKeyword`.`Keyword` = ? AND `FilterKeyword`.`SearchIndex` = ? AND `FilterKeyword`.`Inverted` = ?");
+							$stmt->bind_param('isii',$filter,$key,$search,$inv);
+
+							$filter=strip_tags($_GET['filter']);
+							$key=strip_tags($arr[1]);
+							$search=strip_tags($arr[2]);
+							$inv=strip_tags($arr[3]);
+							$stmt->execute();
+						}else include 'hacker.html';
+					}else include 'hacker.html';
+							
+				}else include 'hacker.html';}
+			}
+			else if($_GET['n']=='6'){
+				$stmt=$mysqli->prepare("SELECT CustomFeed_ID From Filter Where ID=?");
+				$stmt->bind_param('s',$filter);
+
+				$filter=strip_tags($_GET['filter']);
+				$stmt->execute();
+				$result=$stmt->get_result();
+				foreach($result as $fcheck){
+				if($fcheck['CustomFeed_ID']==$_GET['profile']){
+					if(isset($_GET['a'])){
+						$arr=unserialize(base64_decode(urldecode($_GET['a'])));
+						if($arr[0]==$_GET['filter']){
+							$stmt=$mysqli->prepare("DELETE FROM `Newsfeed`.`FilterURL` WHERE `FilterURL`.`Filter_ID` = ? AND `FilterURL`.`SourceFeed_ID` = ?");
+							$stmt->bind_param('ii',$filter,$url);
+
+							$filter=strip_tags($_GET['filter']);
+							$url=strip_tags($arr[1]);
+							$stmt->execute();
+						}else include 'hacker.html';
+					}else include 'hacker.html';
+				}else include 'hacker.html';}
+			}
+			else include 'hacker.html';
+			}
+		}
+		
+		echo "<h1>Einstellungen für dieses Profil:</h1>";
+
+
+		$stmt=$mysqli->prepare("SELECT * From Filter WHERE CustomFeed_ID=?");
+		$stmt->bind_param('s',$profile);
+		$profile=strip_tags($_GET['profile']);
+		$stmt->execute();
+		$result = $stmt->get_result();
+
+
+		foreach($result as $row){
+			echo"
+			<div class=del2>
+					
+					<a href='index.php?click=settings2&profile=".$_GET['profile']."&filter=".$row['ID']."&n=4'>
+					<img src='delete.png' alt='-' width=30 height=30>
+					</a>
+					</div>
+			<details class='top'><summary>".$row['Name']."
+			</summary>
+			<ul><li><details class='bot'><summary>Schlagwörter</summary><ul>";
+
+
+
+			
+
+				$stmt=$mysqli->prepare("SELECT * FROM `FilterKeyword` WHERE Filter_ID=?");
+				$stmt->bind_param('s',$filter);
+
+				$filter=$row['ID'];
+				$stmt->execute();
+				$result = $stmt->get_result();
+
+				foreach($result as $row3){
+					$serial_arr=urlencode(base64_encode(serialize(array($row3['Filter_ID'],$row3['Keyword'],$row3['SearchIndex'],$row3['Inverted']))));
+					
+					echo"<li><div";
+					if($row3['Inverted']=='1'){echo " class=invert";}else{echo " class=normal";}
+					echo ">".
+					$row3['Keyword']."</div><div class=del>
+					
+					<a href='index.php?click=settings2&profile=".$_GET['profile']."&filter=".$row['ID']."&n=5&a=".$serial_arr."'>
+					<img src='delete.png' alt='-' width=30 height=30>
+					</a>
+					</div></li><div class=additional>";
+					if($row3['Inverted']=='1'){echo "Invertiert: ";}else{echo "Normal: ";}
+					if($row3['SearchIndex']=='0'){echo "Titelsuche";}else if($row3['SearchIndex']=='1'){echo "Beschreibungssuche";}else if($row3['SearchIndex']=='2'){echo "Volltextsuche";}
+					
+					
+					echo"</div>";
+				}
+				echo "<div class=newW><p>Neu:</p><form name='form' action='index.php?click=settings2&profile=".$_GET['profile']."&filter=".$row['ID']."&n=2' method='post'><div class=newK>
+					<input type='text' name='f[key]' id='key' /> <input type='submit' name='submit' value='Anlegen' />
+
+					
+						
+					</div>
+					<div class=newOpt>
+					<label><input type='checkbox' name='f[not]' value='1'>Nicht </label><select name=f[searchindex] id=searchindex><option value=0>Titelsuche</option><option value=1>Beschreibungssuche</option><option selected='selected' value=2>Volltextsuche</option></select>
+					</div></form></div>";
+				echo "</ul></details></li><li><details class='bot'><summary>Anbieter</summary><ul>";
+
+
+
+				$stmt=$mysqli->prepare("SELECT * From SourceFeed INNER JOIN FilterURL ON FilterURL.SourceFeed_ID=SourceFeed.ID WHERE FilterURL.Filter_ID =?");
+				$stmt->bind_param('s',$filter);
+
+				$filter=$row['ID'];
+				$stmt->execute();
+				$result = $stmt->get_result();
+
+				foreach($result as $row2){
+					$serial_arr=urlencode(base64_encode(serialize(array($row2['Filter_ID'],$row2['SourceFeed_ID']))));
+					echo"<li>".$row2['Title']."
+					
+					<div class=del>
+					
+					<a href='index.php?click=settings2&profile=".$_GET['profile']."&filter=".$row['ID']."&n=6&a=".$serial_arr."'>
+					<img src='delete.png' alt='-' width=30 height=30>
+					</a>
+					</div></li>";
+				}
+				echo "<div class=newW><p>Neu:</p><div style=margin-left:40px;><form name='form' action='index.php?click=settings2&profile=".$_GET['profile']."&filter=".$row['ID']."&n=3' method='post'>
+				<select name='f[src]' id='src' /> ";
+
+				$SQL4="SELECT * FROM SourceFeed";
+				foreach($mysqli->query($SQL4) as $row3){
+				echo "<option value=".$row3['ID'].">".$row3['Title']."</option>";
+				}
+
+
+				echo "</select>
+				<input type='submit' name='submit' value='Anlegen' />
+
+				</form></div></div>";
+
+			
+			echo "</ul></details></li></ul></details>";
+		}
+		echo"
+		<div class=newW><p>Neuer Filter:</p><div class=newK><form name='form' action='index.php?click=settings2&profile=".$_GET['profile']."&n=1' method='post'>
+		<label for='pname'></label><input type='text' name='f[fname]' id='fname' ><input type='submit' name='submit' value='Anlegen'></div></div>
+
+
+		</form>";
+
+
+	}else include 'hacker.html';
+	}
+	}else include 'hacker.html';
+}
+else include 'hacker.html';
+
+?>
+
+
+

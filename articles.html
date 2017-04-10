@@ -1,0 +1,64 @@
+<?php
+
+
+if(isset($_SESSION['login'])){
+if(isset($_GET['profile'])){
+	
+include("../../zugriff.php");
+// Check connection
+if ($mysqli->connect_error) {
+    die("Connection failed: " . $mysqli->connect_error);
+}
+
+$stmt=$mysqli->prepare("SELECT User_ID FROM CustomFeed Where ID=?");
+$stmt->bind_param('s',$profile);
+$profile=strip_tags($_GET['profile']);
+$stmt->execute();
+$result = $stmt->get_result();
+foreach($result as $userdb){
+if($userdb['User_ID']==$_SESSION['user']['ID']){
+
+
+$stmt=$mysqli->prepare("SELECT article.ID FROM SourceFeedEntry article INNER JOIN CustomFeedEntry entry ON entry.SourceFeedEntry_ID = article.ID INNER JOIN Filter filt ON entry.Filter_ID = filt.ID INNER JOIN CustomFeed prof ON filt.CustomFeed_ID = prof.ID WHERE prof.ID= ? ORDER BY article.ID DESC");
+$stmt->bind_param('s',$profile);
+$profile=strip_tags($_GET['profile']);
+$stmt->execute();
+$result = $stmt->get_result();
+
+        foreach($result as $row)
+        {
+            
+                $SQL2="SELECT SourceFeedEntry.Title as t1,SourceFeed.Title as t2,SourceFeedEntry.URL as URL,Img_URL,PubDate,Description FROM SourceFeedEntry,SourceFeed WHERE SourceFeedEntry.ID=".$row['ID']." AND SourceFeedEntry.SourceFeed_ID=SourceFeed.ID"; 
+				foreach ($mysqli->query($SQL2) as $row2){
+					echo "<a href='".$row2['URL']."'><article id='art'>";
+					if($row2['Img_URL']==''){
+						$row2['Img_URL']='no-image-available.jpg';
+					}
+					echo "<div class=src><p>".$row2['t2']."</p><div class=thumb><img src='".$row2['Img_URL']."' class=thumb></div></div><p class=date>".$row2['PubDate']."</p><div style=max-width:520px;float:left;><p class=titl>".$row2['t1']."</p><p class=desc>".$row2['Description']."</p></div><div style=clear:left;></div></article></a>";
+		
+            }
+            print "\n";
+        }
+
+/*
+   $SQL="SELECT article.ID FROM SourceFeedEntry article INNER JOIN CustomFeedEntry entry ON entry.SourceFeedEntry_ID = article.ID INNER JOIN Filter filt ON entry.Filter_ID = filt.ID INNER JOIN CustomFeed prof ON filt.CustomFeed_ID = prof.ID WHERE prof.ID =".$_GET['profile']." ORDER BY article.ID DESC";
+	foreach ($mysqli->query($SQL) as $row){
+		$SQL2="SELECT SourceFeedEntry.Title as t1,SourceFeed.Title as t2,SourceFeedEntry.URL as URL,Img_URL,PubDate,Description FROM SourceFeedEntry,SourceFeed WHERE SourceFeedEntry.ID=".$row['ID']." AND SourceFeedEntry.SourceFeed_ID=SourceFeed.ID"; 
+		foreach ($mysqli->query($SQL2) as $row2){
+			echo "<a href='".$row2['URL']."'><article id='art'>";
+			if($row2['Img_URL']==''){
+			$row2['Img_URL']='no-image-available.jpg';
+			}
+			echo "<div class=src><p>".$row2['t2']."</p><div class=thumb><img src='".$row2['Img_URL']."' class=thumb></div></div><p class=date>".$row2['PubDate']."</p><div style=max-width:520px;float:left;><p class=titl>".$row2['t1']."</p><p class=desc>".$row2['Description']."</p></div><div style=clear:left;></div></article></a>";
+		}
+	}
+	*/
+   
+}
+else include 'hacker.html';
+}}
+else include 'hacker.html';
+}
+else include 'hacker.html';
+
+?>

@@ -1,0 +1,39 @@
+
+<?php
+if(isset($_SESSION['login'])){
+echo "<h1>Willkommen ".$_SESSION['user']['username']."!</h1>";
+
+echo "
+<profiles>
+<ul>
+<li><a href='index.php?n=1'><p>Wohnung anbieten</p></a></li>
+<li><a href='index.php?n=2'><p>Wohnung suchen</p></a></li>
+
+</ul>
+</profiles>
+";
+
+
+
+}
+else{
+?>
+
+
+<h1>Unser Team</h1>
+<div id='team'><h2>Kevin Mangold</h2></div>
+
+<div id='team'><h2>Tessa Haschtschek</h2></div>
+
+<div id='team'><h2>Severin Neuner</h2></div>
+
+<div id='team'><h2>Florian Schmidt</h2></div>
+
+<div id='team'><h2>Nicholas Dickel</h2></div><div style='clear:left;'></div>
+
+<?php
+//echo "<div class='welcome'><h2>Willkommen!</h2><div class=welcp>Alle relevanten Nachrichten für Sie!</div><div class=welcp>Verschiedene Nachrichtenportale!</div><div class=welcp>Persönlich festgelegte Schlüsselwörter!</div><div class=welcp>Optionaler Versand per Mail!</div><div><a href=index.php?click=register><h3>Jetzt Registrieren!</h3></a></div></div>";
+}
+?>
+
+
