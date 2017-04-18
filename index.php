@@ -47,7 +47,7 @@ start: function(number)
 $("#slider_content1,#slider_content2,#slider_content3").fadeOut(500);},
 complete: function(number)
 {
-$("#slider_content" + number).delay(100).fadeIn(1000);}},
+$("#slider_content" + number).delay(100).fadeIn(500);}},
 play:
 {
 active: false,
@@ -102,23 +102,23 @@ echo "<a href='index.php?click=register'><li>Registrieren</li></a>";
 
 <?php
 
-if(isset($_SESSION['login']) || isset($_GET['click'])){}
+if(	isset($_GET['click'])){}
 else{
 	echo'
 <section class="container">
 <h2 class="hidden">Slider</h2>
-<article id="slider_content1">
-<h3>Wilkommen!</h3>
-<p>Alle für Sie interessanten Wohnungen!</p>
-<a class="button" href="index.php?click=register">Jetzt Registrieren!</a></article>
-<article id="slider_content2">
-<h3>Persönlich!</h3>
-<p>Wohnungen einstellen!</p>
-<a class="button" href="index.php?click=register">Jetzt Registrieren</a></article>
-<article id="slider_content3">
-<h3>Überall!</h3>
-<p>Wohnungen suchen!</p>
-<a class="button" href="index.php?click=register">Jetzt Registrieren</a></article>
+<div id=slideBG></div><article id=slider_content>
+<h3>Jetzt Angebote oder Gesuche finden!</h3><br>
+<form name="find" action="index.php?click=find" method="post">
+<select name=ort id=ort><option>Stuttgart-Mitte</option>
+	<option>Stuttgart-Nord</option>
+	<option>Stuttgart-Ost</option>
+	<option>Stuttgart-Süd</option>
+	<option>Stuttgart-West</option></select>
+<select name=aog id=aog><option>Angebote</option><option>Gesuche</option></select>
+<div id=subm><input type=submit id=find value=Finden></div>
+</form>
+</article>
 <div id="slides" style="display:block;">
 <img src="WE1.png" alt="Picture 1">
 <img src="WE2.png" alt="Picture 2">
@@ -134,11 +134,9 @@ else{
      case 'login': include('login.html');break;  
 	 case 'register': include('register.html');break; 
 	case 'logout': include('logout.html');break; 
-	case 'profiles': include('profiles.html');break;
-	case 'articles': include('articles.html');break;
-	
-	case 'settings2':include('settings2.html');break;
     case 'account':include('account.html');break;
+	case 'offer':include('offer.html');break;	
+	case 'find':include('find.html');break;
      default: include('inhalt.html');
    }  
    
