@@ -133,10 +133,13 @@ else{
    switch($_GET['click']){
      case 'login': include('login.html');break;  
 	 case 'register': include('register.html');break; 
-	case 'logout': include('logout.html');break; 
-    case 'account':include('account.html');break;
-	case 'offer':include('offer.html');break;	
-	case 'find':include('find.html');break;
+	 case 'logout': include('logout.html');break; 
+     case 'account':include('account.html');break;
+	 case 'offer':include('offer.html');break;	
+	 case 'find':include('find.html');break;
+	 case 'impressum':include('impressum.html');break;
+	 case 'ch_pwd':include('ch_pwd.html');break;
+	 case 'delete':include('delete.html');break;
      default: include('inhalt.html');
    }  
    
