@@ -141,6 +141,9 @@ else{
 	case 'mail':include('mail.html');break;
 	case 'object':include('object.html');break;
 	case 'treffer':include('treffer.html');break;
+	 case 'impressum':include('impressum.html');break;
+	 case 'ch_pwd':include('ch_pwd.html');break;
+	 case 'delete':include('delete.html');break;
      default: include('inhalt.html');
    }  
    
@@ -180,5 +183,4 @@ Ich wünsche euch allen einen schönen Tag
 </article></section></footer>
 
 
-</body>
-</html>
+	</body></html>
