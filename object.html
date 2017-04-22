@@ -5,88 +5,76 @@ include("../../zugriffWE.php");
 if ($mysqli->connect_error) {
 	die("Connection failed: " . $mysqli->connect_error);
 }
-$stmt=$mysqli->prepare("SELECT * FROM Angebot Where ID=?");
+$stmt=$mysqli->prepare("SELECT * FROM Angebot, Benutzer Where Angebot.ID=? AND Angebot.Benutzer_ID=Benutzer.ID");
 $stmt->bind_param('i',$id);
 $id=strip_tags($_GET['n']);
 $stmt->execute();
 $result = $stmt->get_result();
 foreach($result as $row){
+echo "<h1 id='objtitl'>".$row['Titel']."</h1>";
+
 ?>
-<div id='img_slider'>
-<link rel="stylesheet" href="img_slide.css" type="text/css" media="screen" />
-<!-- zuerst das Sichtfenster -->
-<div class="cssSlider">
- 
-    <!-- die inputs um den Slider zu Steuern -->
-    <input type="radio" name="slider" id="slide01" checked="checked">
-    <input type="radio" name="slider" id="slide02">
-    <input type="radio" name="slider" id="slide03">
-    <input type="radio" name="slider" id="slide04">
- 
-    <!-- die einzelnen Slides, hier als Liste angelegt -->
-    <ul class="sliderElements">
-        <li>
-            <figure>
-                <img src="no-image-available.jpg" alt="" height="400" width="600">
-            </figure>
-        </li>
-        <li>
-            <figure>
-                <img src="no-image-available.jpg" alt="" height="400" width="600">
-            </figure>
-        </li>
-        <li>
-            <figure>
-                <img src="no-image-available.jpg" alt="" height="400" width="600">
-            </figure>
-        </li>
-		<li>
-            <figure>
-                <img src="no-image-available.jpg" alt="" height="400" width="600">
-            </figure>
-        </li>
-        
-    </ul>
- 
-    <!-- Eine Steuerung -->
-    <ul class="sliderControls">
-        <li><label for="slide01">1</label></li>
-        <li><label for="slide02">2</label></li>
-        <li><label for="slide03">3</label></li>
-        <li><label for="slide04">4</label></li>
-    </ul>
-</div>
-</div>
 
 
-
- <div id="slides2">
-      <img src="img/example-slide-1.jpg" alt="Photo by: Missy S Link: http://www.flickr.com/photos/listenmissy/5087404401/">
-      <img src="img/example-slide-2.jpg" alt="Photo by: Daniel Parks Link: http://www.flickr.com/photos/parksdh/5227623068/">
-      <img src="img/example-slide-3.jpg" alt="Photo by: Mike Ranweiler Link: http://www.flickr.com/photos/27874907@N04/4833059991/">
-      <img src="img/example-slide-4.jpg" alt="Photo by: Stuart SeegerLink: http://www.flickr.com/photos/stuseeger/97577796/">
-      <a href="#" class="slidesjs-previous slidesjs-navigation"><i class="icon-chevron-left"></i></a>
-      <a href="#" class="slidesjs-next slidesjs-navigation"><i class="icon-chevron-right"></i></a>
-    </div>
+<script type="text/javascript" src="fadeSlideShow.js"></script>
+<script>
+jQuery(document).ready(function(){ // Dom Ready Funktion von jQuery
+    jQuery('#slideshow').fadeSlideShow({
+	width: 300,
+	height: 200,
+	autoplay: false
 	
-	<script>
-    $(function() {
-      
-      $('#slides2').slidesjs({
-        width: 940,
-        height: 528,
-        navigation: true,
-        start: 1,
-        play: {
-          auto: false
-        }
-      });
-
-    });
-  </script>
+	}); // Start der simple FadeSlideShow
+});</script>
+<link rel="stylesheet" type="text/css" href="slideshow.css" media="all" />
+<div id='slideshowWrapper'>
+<div id="slideshow">
 
 
+	<?php
+	include("../../zugriffWE.php");
+	// Check connection
+	if ($mysqli->connect_error) {
+		die("Connection failed: " . $mysqli->connect_error);
+	}
+	$stmt=$mysqli->prepare("SELECT * FROM Bilder Where Angebots_ID=? ORDER BY ID DESC");
+	$stmt->bind_param('i',$aid);
+	$aid=strip_tags($id);
+	$stmt->execute();
+	$result = $stmt->get_result();
+	$done=0;
+	foreach($result as $row2){
+	if($done==0){$done=1;}
+	echo "<img src='uploads/".$row2['Image_URL']."' alt='' />";
+	}
+	if($done==0){
+	echo "<img src='no-image-available.jpg' alt='' />";
+	}
+	
+	?>
+   
+</div>
+</div>
+<div id='objdesc'>
 <?php
+echo "
+<table><tr><th>".$row['Preis']."€</th><th>".$row['Zimmer']."</th><th>".$row['Quadratmeter']."m²</th></tr><tr><td>Gesamtmiete</td><td>Zimmer</td><td>Größe</td></tr></table>
+<div id='objcontact'><p>Kontakt: ".$row['Mail']."</p><form name='mail' action='index.php?click=mail' method='post'><input type='hidden' name='mail' value=".$row['Mail']."><input type='submit' value='Nachricht senden'></form></div>
+
+</div>
+<div id='objaddress'>
+<h1>Adresse</h1><p>".$row['Straße']."</p><p>".$row['PLZ']." ".$row['Ort']."</p>
+</div>
+<div id='objavailable'>
+<h1>Verfügbarkeit</h1><p>Frei ab: ".$row['Anfang']."</p><p>Frei bis: ".$row['Ende']."</p>
+</div>
+<div id=objinfo>
+<h1>Weitere Informationen</h1><p>".$row['Infotext']."</p>
+</div>
+
+
+";
+
 }
 }
 ?>
