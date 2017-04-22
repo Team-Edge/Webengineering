@@ -1,0 +1,75 @@
+<?php 
+if (isset($_SESSION['login'])) {
+	header('index.php');
+} else {
+	if (!empty($_POST)) {
+		if (
+			empty($_POST['f']['username']) ||
+			empty($_POST['f']['password'])
+		) {
+			$message['error'] = 'Bitte alles ausfüllen.<br>So viel ist es doch nicht :)';
+		} else {
+			
+			include("../../zugriffWE.php");
+			if ($mysqli->connect_error) {
+				$message['error'] = 'Verbindungsfehler: ' . $mysqli->connect_error;
+			} else {
+				$query = sprintf(
+					"SELECT ID, Name, Passwort FROM Benutzer WHERE Name = '%s'",
+					$mysqli->real_escape_string($_POST['f']['username'])
+				);
+				$result = $mysqli->query($query);
+				if ($row = $result->fetch_array(MYSQLI_ASSOC)) {
+					if (crypt($_POST['f']['password'], $row['Passwort']) == $row['Passwort']) {
+						session_start();
+ 
+						$_SESSION = array(
+							'login' => true,
+							'user'  => array(
+								'username'  => $row['Name'],
+								'ID' => $row['ID']
+							)
+						);
+						$message['success'] = 'Login erfolgreich, weiter zum Inhalt.';
+						header('Location: ./index.php');
+					} else {
+						$message['error'] = 'Passwort Falsch';
+					}
+				} else {
+					$message['error'] = 'Benutzer nicht gefunden';
+				}
+				$mysqli->close();
+			}
+		}
+	} else {
+		$message['notice'] = 'Benutzername und Passwort eingeben.<br />' .
+			'Noch kein Account? <a href="index.php?click=register">Jetzt Registrieren!</a><br />' .
+			'Passwort vergessen? <a href="./newpw.php">Neu anfordern!</a>';
+	}
+}
+?>
+
+
+<h2>Loginseite</h2>
+<form name="form" action="./index.php?click=login" method="post">
+
+<?php if (isset($message['error'])): ?>
+			<p class="error"><?php echo $message['error'] ?></p>
+<?php endif;
+	if (isset($message['success'])): ?>
+			<p class="success"><?php echo $message['success'] ?></p>
+<?php endif;
+	if (isset($message['notice'])): ?>
+			<p class="notice"><?php echo $message['notice'] ?></p>
+<?php endif; ?>
+			
+<table>
+<tr><td style="padding-right:30px;">
+<p><label for="username">Benutzername</label></td><td>
+					<input type="text" name="f[username]" id="username"<?php 
+					echo isset($_POST['f']['username']) ? ' value="' . htmlspecialchars($_POST['f']['username']) . '"' : '' ?> /></p></td></tr>
+				<tr><td style="padding-right:30px;"><p><label for="password">Passwort</label></p></td><td><input type="password" name="f[password]" id="password" /></p></td></tr></table>
+				
+<p><input type="submit" name="submit" value="Anmelden"></p>
+
+</form> 

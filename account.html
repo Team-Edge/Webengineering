@@ -1,0 +1,25 @@
+<?php
+
+if(isset($_SESSION['login'])){
+echo "<h1>Accounteinstellungen</h1><table class=Acc>";
+include("../../zugriffWE.php");
+if ($mysqli->connect_error) {
+$message['error'] = 'Datenbankverbindung fehlgeschlagen: ' . $mysqli->connect_error;
+}
+$stmt=$mysqli->prepare("SELECT * FROM Benutzer WHERE ID=?");
+$stmt->bind_param('i',$uID);
+
+
+$uID=strip_tags($_SESSION['user']['ID']);
+$stmt->execute();
+$result = $stmt->get_result();
+foreach($result as $row){
+echo"
+<tr><td>Username:</td><td>".$_SESSION['user']['username']."</td></tr><tr><td>E-Mail:</td><td>".$row['Mail']."</td></tr>";
+}
+echo "</table><a class=button href='index.php?click=ch_pwd'>Passwort ändern</a><a class=button href='index.php?click=delete' onclick='return confirm('Wollen Sie den Account wirklich löschen?');'>Account löschen</a>";
+}
+
+
+
+?>
