@@ -1,0 +1,72 @@
+<?php
+if(isset($_GET['n'])){
+include("../../zugriffWE.php");
+// Check connection
+if ($mysqli->connect_error) {
+	die("Connection failed: " . $mysqli->connect_error);
+}
+$stmt=$mysqli->prepare("SELECT * FROM Angebot Where ID=?");
+$stmt->bind_param('i',$id);
+$id=strip_tags($_GET['n']);
+$stmt->execute();
+$result = $stmt->get_result();
+foreach($result as $row){
+?>
+<div id='img_slider'>
+<link rel="stylesheet" href="img_slide.css" type="text/css" media="screen" />
+<!-- zuerst das Sichtfenster -->
+<div class="cssSlider">
+ 
+    <!-- die inputs um den Slider zu Steuern -->
+    <input type="radio" name="slider" id="slide01" checked="checked">
+    <input type="radio" name="slider" id="slide02">
+    <input type="radio" name="slider" id="slide03">
+    <input type="radio" name="slider" id="slide04">
+ 
+    <!-- die einzelnen Slides, hier als Liste angelegt -->
+    <ul class="sliderElements">
+        <li>
+            <figure>
+                <img src="no-image-available.jpg" alt="" height="400" width="600">
+            </figure>
+        </li>
+        <li>
+            <figure>
+                <img src="no-image-available.jpg" alt="" height="400" width="600">
+            </figure>
+        </li>
+        <li>
+            <figure>
+                <img src="no-image-available.jpg" alt="" height="400" width="600">
+            </figure>
+        </li>
+		<li>
+            <figure>
+                <img src="no-image-available.jpg" alt="" height="400" width="600">
+            </figure>
+        </li>
+		<li>
+            <figure>
+                <img src="no-image-available.jpg" alt="" height="400" width="600">
+            </figure>
+        </li>
+        
+    </ul>
+ 
+    <!-- Eine Steuerung -->
+    <ul class="sliderControls">
+        <li><label for="slide01">1</label></li>
+        <li><label for="slide02">2</label></li>
+        <li><label for="slide03">3</label></li>
+        <li><label for="slide04">4</label></li>
+        <li><label for="slide05">5</label></li>
+    </ul>
+</div>
+</div>
+
+
+
+<?php
+}
+}
+?>

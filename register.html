@@ -1,0 +1,75 @@
+﻿<?php
+	$message = array();
+	if (!empty($_POST)) {
+		if (
+			empty($_POST['f']['username']) ||
+			empty($_POST['f']['mail']) ||
+			empty($_POST['f']['password']) ||
+			empty($_POST['f']['password_again'])
+		) {
+			$message['error'] = 'Es wurden nicht alle Felder ausgefüllt.';
+		} else if ($_POST['f']['password'] != $_POST['f']['password_again']) {
+			$message['error'] = 'Die eingegebenen Passwörter stimmen nicht überein.';
+		} else {
+			unset($_POST['f']['password_again']);
+			$salt = ''; 
+			for ($i = 0; $i < 22; $i++) { 
+				$salt .= substr('./ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789', mt_rand(0, 63), 1); 
+			}
+			$_POST['f']['password'] = crypt(
+				$_POST['f']['password'],
+				'$2a$10$' . $salt
+			);
+ 
+			
+			include("../../zugriffWE.php");
+			if ($mysqli->connect_error) {
+				$message['error'] = 'Datenbankverbindung fehlgeschlagen: ' . $mysqli->connect_error;
+			}
+			$query = sprintf(
+				"INSERT INTO Benutzer (Name, Passwort, Mail)
+				SELECT * FROM (SELECT '%s', '%s', '%s') as new_user
+				WHERE NOT EXISTS (
+					SELECT Name FROM Benutzer WHERE Name = '%s'
+				) LIMIT 1;",
+				$mysqli->real_escape_string($_POST['f']['username']),
+				$mysqli->real_escape_string($_POST['f']['password']),
+				$mysqli->real_escape_string($_POST['f']['mail']),
+				$mysqli->real_escape_string($_POST['f']['username'])
+			);
+			$mysqli->query($query);
+			if ($mysqli->affected_rows == 1) {
+				$message['success'] = 'Neuer Benutzer (' . htmlspecialchars($_POST['f']['username']) . ') wurde angelegt, <a href="index.php?click=login">weiter zur Anmeldung</a>.';
+				
+			} else {
+				$message['error'] = 'Der Benutzername ist bereits vergeben.';
+			}
+			$mysqli->close();
+		}
+	} else {
+		$message['notice'] = 'Übermitteln Sie das ausgefüllte Formular um ein neues Benutzerkonto zu erstellen.';
+	}
+?>
+<form name='form' action="index.php?click=register" method="post">
+<?php if (isset($message['error'])): ?>
+			<p class="error"><legend>Fehler</legend><?php echo $message['error'] ?></p>
+<?php endif;
+	if (isset($message['success'])): ?>
+			<p class="success"><legend>Erfolg</legend><?php echo $message['success'] ?></p>
+<?php endif;
+	if (isset($message['notice'])): ?>
+			<p class="notice"><legend>Hinweis</legend><?php echo $message['notice'] ?></p>
+<?php endif; ?>
+			
+			<p>
+			<table>
+				<tr><td><label for="username">Benutzername</label></td><td> <input type="text" name="f[username]" id="username"<?php echo isset($_POST['f']['username']) ? ' value="' . htmlspecialchars($_POST['f']['username']) . '"' : '' ?> /></td></tr>
+				<tr><td><label for="username">E-Mail</label></td><td> <input type="text" name="f[mail]" id="mail"/></td></tr>
+				<tr><td><label for="password">Kennwort</label></td><td> <input type="password" name="f[password]" id="password" /></td></tr>
+				<tr><td style="padding-right:30px;"><label for="password_again">Kennwort wiederholen</label></td><td> <input type="password" name="f[password_again]" id="password_again" /></td></tr>
+			</table>
+			</p>
+			<p>
+			<input type="submit" name="submit" value="Registrieren" />
+			</p>
+		</form>
