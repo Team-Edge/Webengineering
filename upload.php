@@ -9,43 +9,8 @@
 		echo htmlspecialchars(print_r($_FILES,1));
 		echo "</pre>\r\n";
 	}
-	if (isset($_FILES[$fileupload]['error']))
-    { 
-        if ($_FILES[$fileupload]['error'] === UPLOAD_ERR_OK)
-        {
-            file_process($_FILES[$fileupload]);   ### Verarbeitungsfunktion erstellen wir im Folgenden
-        }
-        ### Namensangabe als Array ### 
-        elseif (is_array($_FILES[$fileupload]['error']))
-        {
-            foreach($_FILES[$fileupload]['error'] as $key => $error)
-            {
-                if ($error === UPLOAD_ERR_OK)
-                {
-                    $_filerec = array();
-                    $_filerec['name'] = $_FILES[$fileupload]['name'][$key];
-                    $_filerec['type'] = $_FILES[$fileupload]['type'][$key];
-                    $_filerec['tmp_name'] = $_FILES[$fileupload]['tmp_name'][$key];
-                    $_filerec['error'] = $_FILES[$fileupload]['error'][$key];
-                    $_filerec['size'] = $_FILES[$fileupload]['size'][$key];
- 
-                    file_process($_filerec);
-                }
-            } 
-        }
-        else
-        {
-            ### Fehlerbearbeitung, oder
-            return false;
-        }
-    }
-	else {
-		$_imagesize = getimagesize($_FILES['dateiupload']['tmp_name'], $_imageinfo);
-		$type = get_img_file_ext($_imagesize[2]);
-		if($type){
-			move_uploaded_file($_FILES['file']['tmp_name'], 'uploads/' .$dateiname_neu.$type);
-		}
-	}
+	move_uploaded_file($_FILES['file']['tmp_name'], 'uploads/' .$dateiname_neu.'.png');
+	
 
 	include("../../zugriffWE.php");
 	if ($mysqli->connect_error) {
@@ -53,7 +18,7 @@
 	}
 	$stmt=$mysqli->prepare("INSERT INTO Bilder (Benutzer_ID, Image_URL) VALUES(?,?)");
 	$stmt->bind_param('is',$user,$adresse);
-	$adresse=$dateiname_neu;
+	$adresse=$dateiname_neu.'.png';
 	$user=strip_tags($_SESSION['user']['ID']);
 	$stmt->execute();
 	$mysqli->close();

@@ -45,11 +45,6 @@ foreach($result as $row){
                 <img src="no-image-available.jpg" alt="" height="400" width="600">
             </figure>
         </li>
-		<li>
-            <figure>
-                <img src="no-image-available.jpg" alt="" height="400" width="600">
-            </figure>
-        </li>
         
     </ul>
  
@@ -59,11 +54,36 @@ foreach($result as $row){
         <li><label for="slide02">2</label></li>
         <li><label for="slide03">3</label></li>
         <li><label for="slide04">4</label></li>
-        <li><label for="slide05">5</label></li>
     </ul>
 </div>
 </div>
 
+
+
+ <div id="slides2">
+      <img src="img/example-slide-1.jpg" alt="Photo by: Missy S Link: http://www.flickr.com/photos/listenmissy/5087404401/">
+      <img src="img/example-slide-2.jpg" alt="Photo by: Daniel Parks Link: http://www.flickr.com/photos/parksdh/5227623068/">
+      <img src="img/example-slide-3.jpg" alt="Photo by: Mike Ranweiler Link: http://www.flickr.com/photos/27874907@N04/4833059991/">
+      <img src="img/example-slide-4.jpg" alt="Photo by: Stuart SeegerLink: http://www.flickr.com/photos/stuseeger/97577796/">
+      <a href="#" class="slidesjs-previous slidesjs-navigation"><i class="icon-chevron-left"></i></a>
+      <a href="#" class="slidesjs-next slidesjs-navigation"><i class="icon-chevron-right"></i></a>
+    </div>
+	
+	<script>
+    $(function() {
+      
+      $('#slides2').slidesjs({
+        width: 940,
+        height: 528,
+        navigation: true,
+        start: 1,
+        play: {
+          auto: false
+        }
+      });
+
+    });
+  </script>
 
 
 <?php

@@ -1,11 +1,10 @@
 <?php
-	$text = substr($_GET['text'], 8);
+	session_start();
+	
 	include("../../zugriffWE.php");
 	if ($mysqli->connect_error) {
 		$message['error'] = 'Datenbankverbindung fehlgeschlagen: ' . $mysqli->connect_error;
 	}
-	$stmt="DELETE FROM Bilder WHERE Image_URL=".'"'.$text.'"';
-	echo $stmt;
-	$mysqli->query($stmt);
-	$mysqli->close();
+	
+	$stmt="SELECT FROM Angebot WHERE Benutzer_ID=".$userID;
 ?>

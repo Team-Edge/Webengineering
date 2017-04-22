@@ -72,7 +72,6 @@ else{
 		<option>Wagen</option>
 		<option>Weilimdorf</option>
 		<option>Zuffenhausen</option>
-
 	</select>	
 	<p><label for="adresse"> Adresse</html></p>
 	<input id="adresse" name="f[adresse]" type="text"> 
@@ -80,14 +79,12 @@ else{
 	<input id="plz" name="f[PLZ]" type="text">
 	<p><label for="quadratmeter"> Quadratmeter</html></p>
 	<input id="quadratmeter" name="f[quadratmeter]" type="text">
-
 	<p><label for="zimmer"> Zimmer</html></p>
 	<input id="zimmer" name="f[zimmer]" type="text">
 	<p><label for="preis"> Preis</html></p>
 	<input id="preis" name="f[preis]" type="text">
 	<p><label for="title"> Titel zur Anzeige</html></p>
 	<input id="title" name="f[title]" type="text">
-
 	<p><label for="infotext"> Infotext</html></p>
 	<textarea id="infotext" name="f[info]" type="text" cols="40" rows="5"></textarea>
 	<table>
@@ -99,17 +96,39 @@ else{
 	<td> <input class="dat" type="date" id="end"   name="f[end]" value="2017-01-01"> </td>
 	</tr  style="padding-bottom: 10px;">
 	</table>
-
 </div>
 <div class="dropzone" id="uploadzone">
 	Bilder für die Wohnung hierher ziehen!
 </div>
 
-<form action="upload.php" method="post" enctype="multipart/form-data">
-    <input type="file" name="dateiupload">
-    <input type="submit" name="btn[upload]">
-</form>
+
+    <input type="file" id="uploadFile">
+	<button type="button" id="up">Send</button>
+	<div id="responses"></div>
 <script> 
+
+document.getElementById("up").onclick = send;
+ function send() {
+	console.log("Test");
+	var input = document.getElementById("uploadFile");
+   var data = new FormData(); // das ist unser Daten-Objekt ...
+   data.append('file', input.files[0]); // ... an die wir unsere Datei anhängen
+   $.ajax({
+      url: 'upload.php', // Wohin soll die Datei geschickt werden?
+      data: data,          // Das ist unser Datenobjekt.
+      type: 'POST',         // HTTP-Methode, hier: POST
+      processData: false,
+      contentType: false,
+      // und wenn alles erfolgreich verlaufen ist, schreibe eine Meldung
+      // in das Response-Div
+      success: function(php_script_response){
+                    console.log(php_script_response); // display response from the PHP script, if any
+        }
+   });
+   
+	 setTimeout(refresh, 500);
+}
+
 $('.dropzone').on('dragover', function(evt){
   evt.preventDefault();
 });
@@ -208,7 +227,7 @@ function refresh(){
 							processData: true, 				
 							type: 'GET',
 							success: function(php_script_response){
-								alert(php_script_response); // display response from the PHP script, if any
+								console.log(php_script_response); // display response from the PHP script, if any
 							}
      });
 					}

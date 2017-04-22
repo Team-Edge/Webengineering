@@ -138,14 +138,9 @@ else{
 	case 'offer':include('offer.html');break;
 	case 'request':include('request.html');break;
 	case 'find':include('find.html');break;
-	case 'impressum':include('impressum.html');break;
-	case 'ch_pwd':include('ch_pwd.html');break;
-	case 'delete':include('delete.html');break;
 	case 'mail':include('mail.html');break;
 	case 'object':include('object.html');break;
-	 case 'impressum':include('impressum.html');break;
-	 case 'ch_pwd':include('ch_pwd.html');break;
-	 case 'delete':include('delete.html');break;
+	case 'treffer':include('treffer.html');break;
      default: include('inhalt.html');
    }  
    
@@ -177,7 +172,6 @@ Denkt euch selbst was aus.
 </article>
 <article class="column midlist">
 <h4>Infos</h4>
-<a href="index.php?click=impressum">Impressum, </a>
 Kontakt, Links, ...
 </article>
 <article class="column rightlist">
