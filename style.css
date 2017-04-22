@@ -461,12 +461,75 @@ filter div.src{
 	float:left;
 }
 
-
-#img_slider{
-	width:300px;
-	height:auto;
+#objtitl{
+	color:#46486c;
+	padding-left:43px;
+	font-size:50px;
+}
+#objdesc{
+	float:left;
+	margin:30 0 0 43;
+}
+#objdesc th{
+	color:black;
+	font-size:55;
+	font-weight:bold;
+	text-align:center;
+	padding:10px;
+	border-left:3px solid black;
+	border-right:3px solid black;
+	min-width:100px;
+	
+	
+}
+#objdesc td{
+	color:black;
+	font-size:20;
+	text-align:center;
+	padding:10px;
+	border-left:3px solid black;
+	border-right:3px solid black;
+	
+	
+}
+#objcontact{
+	margin-top:20px;
 }
 
+#objaddress{
+	
+	clear:left;
+	float:left;
+	width:350px;
+	display:block;
+	margin:20 0 0 43;
+	padding-left:20px;
+	border-left:2px dotted black;
+	border-top:2px dotted black;
+
+}
+#objavailable{
+	float:left;
+	width:350px;
+	
+	display:block;
+	margin:20 0 0 43;
+	padding-left:20px;
+	border-left:2px dotted black;
+	border-top:2px dotted black;
+
+}
+#objinfo{
+	clear:left;
+	float:left;
+	width:757px;
+	display:block;
+	min-height:200px;
+	margin:40 0 20 43;
+	padding-left:20px;
+	border-left:2px dotted black;
+	border-top:2px dotted black;
+}
 
 
 

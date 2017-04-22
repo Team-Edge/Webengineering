@@ -1,0 +1,23 @@
+@charset "UTF-8";
+/*
+Theme Name: Simple FadeSlideShow
+Theme URI: http://www.simplefadeslideshow.com
+Description: "simplefadeslideshow.com Website"
+Version: 1.0
+Author: Pascal Bajorat
+Author URI: http://www.pascal-bajorat.com
+Altered by Nicholas Dickel
+*/
+
+/**********************************************************/
+#slideshowWrapper{position:relative;width:300px;margin:20 75 0 43;float:left;}
+#fssPrev{position:absolute;top:30px;left:-67px;background:url(arrows.png) -67px 0px;width:67px;height:143px;text-indent:-999999px;}
+#fssNext{position:absolute;top:30px;left:300px;background:url(arrows.png) no-repeat;width:67px;height:143px;text-indent:-999999px;}
+#fssPlayPause{display:none;}
+
+ul#slideshow{list-style:none;border:1px solid #999;padding:2px;margin:auto;margin-top:5%;width:640px;overflow:hidden;}
+
+#fssList{list-style:none;width:300px;padding:5px 0 0 20px;}
+#fssList li{display:inline;padding-right:10px;}
+#fssList li a{color:#999;text-decoration:none;}
+#fssList li.fssActive a{font-weight:bold;color:#333;}

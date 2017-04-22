@@ -1,6 +1,6 @@
 <?php
 if(isset($_SESSION['login'])){
-if(!empty($_POST)){
+if(!isset($_POST['mail'])){
 /**
  * This example shows sending a message using PHP's mail() function.
  */
@@ -33,6 +33,8 @@ $stmt->execute();
 $result = $stmt->get_result();
 foreach($result as $row){
 
+//Für Umlaute
+$mail->CharSet = 'utf-8'; 
 //Set who the message is to be sent from
 $mail->setFrom($row['Mail'], $row['Name']);
 //Set an alternative reply-to address
@@ -45,10 +47,12 @@ $mail->addReplyTo($row['Mail'], $row['Name']);
 
 
 //Set who the message is to be sent to
-$mail->addAddress('occaso42@gmail.com', 'Occaso');
+$mail->addAddress($_POST['address']);
 //Set the subject line
 $mail->Subject = $_POST['subject'];
  
+
+ $mail->IsHTML(true); //Versand im HTML-Format festlegen
 
 $mail->Body=nl2br($_POST['message']);
 
@@ -66,8 +70,9 @@ if (!$mail->send()) {
 }else{
 	?>
 	<form name='mail' action='index.php?click=mail' method='post'>
+	<input type='hidden' name='address' value=<?php echo $_POST['mail'];?>>
 	<p>Betreff</p><input type='text' name='subject'>
-	<p>Nachricht</p><textarea rows="10" cols="40" name='message'></textarea><br>
+	<p>Nachricht</p><textarea rows="10" cols="80" name='message' style='resize:none;'></textarea><br>
 	<input type='submit' name='submit' value='Absenden'>
 	
 	</form>
