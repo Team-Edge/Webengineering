@@ -114,7 +114,25 @@ else{
 	<option>Stuttgart-Nord</option>
 	<option>Stuttgart-Ost</option>
 	<option>Stuttgart-Süd</option>
-	<option>Stuttgart-West</option></select>
+	<option>Stuttgart-West</option>
+	<option>Bad Cannstatt</option>
+		<option>Birkach</option>
+		<option>Botnang</option>
+		<option>Degerloch</option>
+		<option>Feuerbach</option>
+		<option>Hedelfingen</option>
+		<option>Möhringen</option>
+		<option>Mühlhausen</option>
+		<option>Münster</option>
+		<option>Obertürkheim</option>
+		<option>Plieningen</option>
+		<option>Sillenbuch</option>
+		<option>Stammheim</option>
+		<option>Untertürkheim</option>
+		<option>Vaihingen</option>
+		<option>Wagen</option>
+		<option>Weilimdorf</option>
+		<option>Zuffenhausen</option></select>
 <select name=aog id=aog><option>Angebote</option><option>Gesuche</option></select>
 <div id=subm><input type=submit id=find value=Finden></div>
 </form>
