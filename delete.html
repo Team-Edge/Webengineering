@@ -1,8 +1,0 @@
-<?php
-	//Account löschen
-	$stmt=$mysqli->prepare("DELETE * FROM Benutzer WHERE ID=? LIMIT 1");
-	$stmt->bind_param('i',$uID);
-	$uID=strip_tags($_SESSION['user']['ID']);
-	$stmt->execute();
-	
-?>
