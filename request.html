@@ -1,0 +1,84 @@
+<link rel="stylesheet" href="kevin_style.css" type="text/css" media="screen" />
+
+<?php
+if(isset($_SESSION['login'])){
+if(!empty($_POST)){
+	include("../../zugriffWE.php");
+	if ($mysqli->connect_error) {
+		$message['error'] = 'Datenbankverbindung fehlgeschlagen: ' . $mysqli->connect_error;
+	}
+	$stmt=$mysqli->prepare("INSERT INTO Gesuch (Ort, Anfang, Ende, Infotext, Benutzer_ID, MinPreis, MaxPreis)
+		VALUES(?,?,?,?,?,?,?)");
+	$stmt->bind_param('ssssidd',$stadtteil,$begin,$end,$info,$user,$minPrice,$maxPrice);
+	$stadtteil=strip_tags($_POST['f']['stadtteil']);
+	$begin=strip_tags($_POST['f']['begin']);
+	$end=strip_tags($_POST['f']['end']);
+	$info=strip_tags($_POST['f']['info']);
+	$user=strip_tags($_SESSION['user']['ID']);
+	$minPrice=strip_tags($_POST['f']['minPrice']);
+	$maxPrice=strip_tags($_POST['f']['maxPrice']);
+	$stmt->execute();
+	$mysqli->close();
+?>
+
+<p> Wohnung erfolgreich eingestellt</p>
+
+<?php
+	}
+else{
+?>
+<form name="form" action="./index.php?click=request" method="post">
+<div>
+	<p><label for="stadtteil"> Stadtteil</html></p>
+	<select id="stadtteil" name="f[stadtteil]" type="text">
+		<option>Stuttgart-Mitte</option>
+		<option>Stuttgart-Nord</option>
+		<option>Stuttgart-Ost</option>
+		<option>Stuttgart-Süd</option>
+		<option>Stuttgart-West</option>
+		<option>Bad Cannstatt</option>
+		<option>Birkach</option>
+		<option>Botnang</option>
+		<option>Degerloch</option>
+		<option>Feuerbach</option>
+		<option>Hedelfingen</option>
+		<option>Möhringen</option>
+		<option>Mühlhausen</option>
+		<option>Münster</option>
+		<option>Obertürkheim</option>
+		<option>Plieningen</option>
+		<option>Sillenbuch</option>
+		<option>Stammheim</option>
+		<option>Untertürkheim</option>
+		<option>Vaihingen</option>
+		<option>Wagen</option>
+		<option>Weilimdorf</option>
+		<option>Zuffenhausen</option>
+	</select>	
+	<p><label for="infotext"> Infotext</html></p>
+	<textarea id="infotext" name="f[info]" type="text" cols="40" rows="5"></textarea>
+	<table>
+		<tr>
+			<td> <p> Beginn Untervermietung</p> </td>
+			<td> <p> Ende Untervermietung</p> </td>
+		</tr>
+			<td> <input class="dat" type="date" id="begin" name="f[begin]" value="2017-01-01" style="margin-right: 50px;"> </td>
+			<td> <input class="dat" type="date" id="end"   name="f[end]" value="2017-01-01"> </td>
+		</tr  style="padding-bottom: 10px;">
+	</table>
+	<table>
+		<tr>
+			<td> <p style="margin-right: 50px;"> Unteres Preislimit</p> </td>
+			<td> <p> Oberes Preislimit</p> </td>
+		</tr>
+			<td> <input class="dat" type="number" id="minPrice" name="f[minPrice]" style="margin-right: 50px;"> </td>
+			<td> <input class="dat" type="number" id="maxPrice"   name="f[maxPrice]"> </td>
+		</tr  style="padding-bottom: 10px;">
+	</table>
+	<input class="send" type="submit" id="send" value="Absenden!">
+</div>
+</form>
+<?php
+}
+}
+?>

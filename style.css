@@ -13,14 +13,14 @@ body
 
 input
 {
-        font-family: 'Open Sans', sans-serif;
+       font-family: 'Open Sans', sans-serif;
         font-size:16px;
         padding: 7px;
         outline:0 ;
         border:1;
         width:250px;
-        background: #E9E4D6;
-        border-radius:5px;
+        background: white;
+        border-radius:5px; 
 }
 
 input[type=submit]
@@ -163,20 +163,37 @@ nav ul li:hover
 		background-color: #595959;
 		transition: all .25s ease;
 }
-
-#slider_content1, #slider_content2, #slider_content3
-{
-        line-height: 25px;
+#slideBG{
+	line-height: 25px;
         font-family: 'Open Sans', sans-serif;
-        width:350px;
+        width:600px;
+		height:100px;
         position:absolute;
-        top:15%;
-        left:15%;
-        display:none;
-        z-index:11;
+        top:20%;
+        left:20%;
+		padding:20px;
+		 z-index:11;
+		 background:grey;
+		 opacity:0.7;
+		 border-radius:10px;
+	
+}
+#slider_content
+{
+        
+		line-height: 25px;
+        font-family: 'Open Sans', sans-serif;
+        width:600px;
+        position:absolute;
+        top:20%;
+        left:20%;
+		padding:20px;
+		 z-index:12;
+        
+       
 }
 
-#slider_content1 h3, #slider_content2 h3, #slider_content3 h3
+#slider_content h3
 {
         color:#E9E4D6;
         font-size:25px;
@@ -186,14 +203,11 @@ nav ul li:hover
         padding:10px 15px;
         border-radius: 15px 0 15px 0;
         display:inline-block;
+		
 }
 
-#slider_content1
-{
-        display:block;
-}
 
-#slider_content1 p, #slider_content2 p, #slider_content3 p
+#slider_content p
 {
         margin:0 0 30px 0;
         color:#4a463b;
@@ -201,6 +215,9 @@ nav ul li:hover
         padding:10px 15px;
         border-radius: 5px;
 }
+#slider_content #subm{float:right;}
+
+
 
 /* SLIDESHOW */
 /* Prevent the slideshow from flashing on load */
@@ -227,21 +244,26 @@ nav ul li:hover
         color:red;
 }
 
-#slider_content1 p .responsive_button, #slider_content2 p .responsive_button, #slider_content3 p  .responsive_button
-{
-        display:none;
-        color:#000;
-}
-
-
-
 
 #team{
 	float:left;
+	text-align:center;
 	
 	width:180px;
 	height:100px;
 }
+
+#table .row{
+	width:250px;
+	height:200px;
+	float:left;
+	text-align:justify;
+	padding-right:24px;
+	padding-left:24px;
+	border-right:1px solid grey;
+	border-left:1px solid grey;
+}
+
 
 .Acc{
 	margin-bottom:30px;
@@ -328,7 +350,7 @@ profiles pp{
 #art{
 	min-height:220px;
 	height:auto;
-	background-color:#C4C4C4;
+	background-color:#d2d2d2;
 	color:black;
 	border-left:5px solid black;
 	border-right:5px solid black;
@@ -346,8 +368,19 @@ profiles pp{
 	font-size:20px;
 	text-decoration:underline;
 }
-#art p.desc{
-	text-align:justify;
+#art div.desc{
+	margin:30px 0px 0px 20px;
+	
+}
+
+#art div.desc table tr td{
+	text-align:center;
+	padding-bottom:20px;
+	padding-right:20px;
+}
+#art .date{
+	float:left;
+	margin:20px 0px 0px 10px;
 }
 #art img.thumb{
 
@@ -362,6 +395,7 @@ profiles pp{
 	
 	
 	
+	
 }
 #art div.thumb{
 	position:relative;
@@ -370,6 +404,20 @@ profiles pp{
 	height:180px;
 	width:320px;
 	
+}
+#art .price{
+	position:relative;
+	background:black;
+	width:70px;
+	height:35px;
+	z-index:2;
+	opacity:0.4;
+	margin-top:-5px;
+	border-radius:0px 0px 10px 0px;
+}
+#art .price p{
+	color:white;
+	padding:5px 0px 0px 5px;
 }
 #art div.src{
 	width:320;
@@ -412,6 +460,14 @@ filter div.src{
 	width:400px;
 	float:left;
 }
+
+
+#img_slider{
+	width:300px;
+	height:auto;
+}
+
+
 
 
 
@@ -615,7 +671,7 @@ details li:hover + .additional{
 		max-width:900px;
 		min-height:550px;
 		margin:0 auto;
-		padding: 40px 0 45px 0;
+		padding: 30px 0 45px 0;
 		
 		
 }
@@ -785,11 +841,26 @@ footer .wrapper .column h4
 		article div.src{
 			display:none;
 		}
-		.container
+		.container #slides
         {
-                height:1px;
-                top: -1500px;
+			opacity:0;
+			height:300px;
+               
         }
+		.container #slider_content{
+			width:500px;
+			height:150px;
+			left:10%;
+		}
+		.container #slider_content #subm{
+			padding-top:10px;
+			float:none;
+		}
+		.container #slideBG{
+			width:500px;
+			height:150px;
+			left:10%;
+		}
 		
 		 footer .wrapper .column
         {
