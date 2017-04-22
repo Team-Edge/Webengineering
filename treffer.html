@@ -1,10 +1,41 @@
+<p>Ihre Angebote mit passenden Gesuchen!</p>
+<p>Finden Sie ganz einfach für Ihr Angebot den passenden Untermieter</p>
+<br>
 <?php
-	session_start();
-	
 	include("../../zugriffWE.php");
 	if ($mysqli->connect_error) {
 		$message['error'] = 'Datenbankverbindung fehlgeschlagen: ' . $mysqli->connect_error;
 	}
+	$userID=strip_tags($_SESSION['user']['ID']);
+	$stmt="SELECT * FROM Angebot WHERE Benutzer_ID=".$userID." ORDER BY ID DESC";
+	$result = $mysqli->query($stmt);
 	
-	$stmt="SELECT FROM Angebot WHERE Benutzer_ID=".$userID;
+	foreach($result as $row){
+		$angebotID=$row['ID'];
+		$stmt2="SELECT * FROM Treffer WHERE Angebot_ID=".$angebotID;
+		$result2 = $mysqli->query($stmt2);
+		foreach($result2 as $row2){
+			$gesuchID = $row2['Gesuch_ID'];
+			echo "<p>Ihr Angebot: </p>";
+			echo "<a href='index.php?click=object&n=".$row['ID']."'><article id='art'>";
+				if($row['Bilder_ID']==''){
+					$pic='no-image-available.jpg';
+				}
+				echo "<div class=src><p>".$row['Ort']."</p><div class=thumb><img src='".$pic."' class=thumb><div class=price><p>".$row['Preis']."€</p></div></div></div><p class=date></p><div style=max-width:520px;float:left;><p class=titl>".$row['Titel']."</p><div class=desc><div style=float:left;><table><tr><td><img src=rooms.png width='70px' height='70px'></td><td><img src=qm.png width='80px' height='80px'></td></tr><tr><td>".$row['Zimmer']." Zimmer</td><td>".$row['Quadratmeter']."m²</td></tr></table></div><div class=date><table><tr><td>Von: </td><td>".$row['Anfang']."</td></tr><tr><td>Bis: </td><td>".$row['Ende']."</td></tr></table></div></div></div><div style=clear:left;></div></article></a>";
+			$stmt3="SELECT * FROM Gesuch WHERE ID=".$gesuchID;
+			$result3=$mysqli->query($stmt3);
+			foreach($result3 as $row3){
+				echo "<p>Das passende Gesuch: </p>";
+				echo "<div class=src><p>".$row3['Ort']."</p><div class=thumb><div class=price><p>".$row3['MinPreis']."€</p><p>".$row3['MaxPreis']."€</p></div></div></div><p class=date></p><div style=max-width:520px;float:left;><div class=desc><div style=float:left;></div><div class=date><table><tr><td>Von: </td><td>".$row3['Anfang']."</td></tr><tr><td>Bis: </td><td>".$row3['Ende']."</td></tr></table></div></div></div><div style=clear:left;></div></article></a>";
+			}
+			echo "<br><br>";
+		}
+	}
+?>
+<br>
+<br>
+<p>Ihre Gesuche mit passenden Angeboten!</p>
+<p>Finden Sie ganz einfach für Ihr Gesuch die passende Wohnung!</p>
+<br>
+<?php
 ?>
