@@ -7,9 +7,8 @@ if(!empty($_POST)){
 	if ($mysqli->connect_error) {
 		$message['error'] = 'Datenbankverbindung fehlgeschlagen: ' . $mysqli->connect_error;
 	}
-	$stmt=$mysqli->prepare("INSERT INTO Angebot (Ort, Straße, PLZ, Quadratmeter, Zimmer, Preis, Titel, Anfang, Ende, Infotext, Benutzer_ID)
-		VALUES(?,?,?,?,?,?,?,?,?,?,?)");
-	$stmt->bind_param('sssiidssssi',$stadtteil,$adresse,$PLZ,$qm,$zimmer,$preis,$titel,$begin,$end,$info,$user);
+	$stmt=$mysqli->prepare("UPDATE Angebot SET Ort=?, Straße=?, PLZ=?, Quadratmeter=?, Zimmer=?, Preis=?, Titel=?, Anfang=?, Ende=?, Infotext=? WHERE Benutzer_ID=? AND ID=?");
+	$stmt->bind_param('sssiidssssii',$stadtteil,$adresse,$PLZ,$qm,$zimmer,$preis,$titel,$begin,$end,$info,$user,$aID);
 	$stadtteil=strip_tags($_POST['f']['stadtteil']);
 	$adresse=strip_tags($_POST['f']['adresse']);
 	$PLZ=strip_tags($_POST['f']['PLZ']);
@@ -21,34 +20,58 @@ if(!empty($_POST)){
 	$end=strip_tags($_POST['f']['end']);
 	$info=strip_tags($_POST['f']['info']);
 	$user=strip_tags($_SESSION['user']['ID']);
+	$aID=strip_tags($_GET['offerID']);
 	$stmt->execute();
 	
-	$user2=strip_tags($_SESSION['user']['ID']);
-	$sql = "SELECT ID FROM Angebot WHERE Benutzer_ID=".$user2." ORDER BY ID DESC LIMIT 1";
-
-	$result = $mysqli->query($sql);
-	$user3=strip_tags($_SESSION['user']['ID']);
-	if ($result->num_rows > 0) {
-    // output data of each row
-    while($row = $result->fetch_assoc()) {
-		$stmt="UPDATE Bilder SET Angebots_ID=".$row["ID"]." WHERE Angebots_ID=0 AND Benutzer_ID=".$user3;
-		$mysqli->query($stmt);
-    }
-	}
+	$stmt2=$mysqli->prepare("DELETE FROM Bilder WHERE Angebots_ID=? AND Benutzer_ID=?");
+	$stmt2->bind_param('ii', $aID, $user);
+	$stmt2->execute();
+	
+	$stmt3=$mysqli->prepare("UPDATE Bilder SET Angebots_ID=? WHERE Angebots_ID=0 AND Benutzer_ID=?");
+	$stmt3->bind_param('ii', $aID, $user);
+	$stmt3->execute();
 	
 	$mysqli->close();
 ?>
 
-<p> Wohnung erfolgreich eingestellt</p>
+<p> Wohnung erfolgreich geändert</p>
+<script language="javascript" type="text/javascript">
+	document.location="index.php?click=myOffers";
+</script>
+<p>Klicken Sie bitte <a href="index.php?click=myOffers">HIER</a>, um zur Übersicht zurückzukehren. </p>
 
 <?php
-	}
+}
 else{
+
+	include("../../zugriffWE.php");
+	if ($mysqli->connect_error) {
+		$message['error'] = 'Datenbankverbindung fehlgeschlagen: ' . $mysqli->connect_error;
+	}
+	$user=strip_tags($_SESSION['user']['ID']);
+	$aID=strip_tags($_GET['offerID']);
+	
+	$stmt=$mysqli->prepare("INSERT INTO Bilder(ID,Image_URL,Angebots_ID,Benutzer_ID,Nummer) "
+							."SELECT ID,Image_URL, 0, Benutzer_ID, Nummer "
+							."FROM Bilder "
+							."WHERE Angebots_ID=? AND Benutzer_ID=?");
+	$stmt->bind_param('ii', $aID, $user);
+	$stmt->execute();
+	
+	$stmt2="SELECT * FROM Angebot "
+			."WHERE Benutzer_ID=".$user." AND ID=".$aID;
+	$result = $mysqli->query($stmt2);
+	if($result->num_rows != 1) {
 ?>
-<form name="form" action="./index.php?click=offer" method="post">
+<p>Zu änderndes Angebot konnte nicht gefunden werden!</p>
+<?php
+	} else {
+		$row=$result->fetch_assoc();
+?>
+<form name="form" action="./index.php?click=changeOffer&offerID=<?php echo $aID; ?>" method="post">
 <div>
 	<p><label for="stadtteil"> Stadtteil</html></p>
-	<select id="stadtteil" name="f[stadtteil]" type="text">
+	<select id="stadtteil" name="f[stadtteil]" type="text" value="<?php echo $row['Ort']; ?>">
 		<option>Stuttgart-Mitte</option>
 		<option>Stuttgart-Nord</option>
 		<option>Stuttgart-Ost</option>
@@ -74,26 +97,26 @@ else{
 		<option>Zuffenhausen</option>
 	</select>	
 	<p><label for="adresse"> Adresse</html></p>
-	<input id="adresse" name="f[adresse]" type="text"> 
+	<input id="adresse" name="f[adresse]" type="text" value="<?php echo $row['Straße']; ?>"> 
 	<p><label for="plz"> PLZ</html></p>
-	<input id="plz" name="f[PLZ]" type="text">
+	<input id="plz" name="f[PLZ]" type="text" value="<?php echo $row['PLZ']; ?>">
 	<p><label for="quadratmeter"> Quadratmeter</html></p>
-	<input id="quadratmeter" name="f[quadratmeter]" type="text">
+	<input id="quadratmeter" name="f[quadratmeter]" type="text" value="<?php echo $row['Quadratmeter']; ?>">
 	<p><label for="zimmer"> Zimmer</html></p>
-	<input id="zimmer" name="f[zimmer]" type="text">
+	<input id="zimmer" name="f[zimmer]" type="text" value="<?php echo $row['Zimmer']; ?>">
 	<p><label for="preis"> Preis</html></p>
-	<input id="preis" name="f[preis]" type="text">
+	<input id="preis" name="f[preis]" type="text" value="<?php echo $row['Preis']; ?>">
 	<p><label for="title"> Titel zur Anzeige</html></p>
-	<input id="title" name="f[title]" type="text">
+	<input id="title" name="f[title]" type="text" value="<?php echo $row['Titel']; ?>">
 	<p><label for="infotext"> Infotext</html></p>
-	<textarea id="infotext" name="f[info]" type="text" cols="40" rows="5"></textarea>
+	<textarea id="infotext" name="f[info]" type="text" cols="40" rows="5"><?php echo $row['Infotext']; ?></textarea>
 	<table>
 	<tr>
 	<td> <p style="margin-right: 50px;"> Beginn Untervermietung</p> </td>
 	<td> <p> Ende Untervermietung</p> </td>
 	</tr>
-	<td> <input class="dat" type="date" id="begin" name="f[begin]" value="2017-01-01"> </td>
-	<td> <input class="dat" type="date" id="end"   name="f[end]" value="2017-01-01"> </td>
+	<td> <input class="dat" type="date" id="begin" name="f[begin]" value="<?php echo $row['Anfang']; ?>"> </td>
+	<td> <input class="dat" type="date" id="end"   name="f[end]" value="<?php echo $row['Ende']; ?>"> </td>
 	</tr  style="padding-bottom: 10px;">
 	</table>
 </div>
@@ -243,6 +266,7 @@ function refresh(){
 </form>
 
 <?php
+	}
 }
 }
 ?>

@@ -168,6 +168,7 @@ else{
 	 case 'deleteRequest':include('deleteRequest.html');break;
 	case 'requestinfo':include('requestinfo.html');break;
 	case 'changeRequest':include('changeRequest.html');break;
+	case 'changeOffer':include('changeOffer.html');break;
      default: include('inhalt.html');
    }  
    
