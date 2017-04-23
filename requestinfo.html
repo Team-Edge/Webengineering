@@ -1,0 +1,31 @@
+<?php
+if(isset($_GET['n'])){
+include("../../zugriffWE.php");
+// Check connection
+if ($mysqli->connect_error) {
+	die("Connection failed: " . $mysqli->connect_error);
+}
+$stmt=$mysqli->prepare("SELECT * FROM Gesuch, Benutzer Where Gesuch.ID=? AND Gesuch.Benutzer_ID=Benutzer.ID");
+$stmt->bind_param('i',$id);
+$id=strip_tags($_GET['n']);
+$stmt->execute();
+$result = $stmt->get_result();
+foreach($result as $row){
+
+?>
+<div id='reqdesc'>
+<?php
+echo "
+<table><tr><th>".$row['MinPreis']."€</th><th>".$row['MaxPreis']."€</th><th>".$row['Anfang']."</th><th>".$row['Ende']."</th></tr><tr><td>Minimal</td><td>Maximal</td><td>Einzug</td><td>Auszug</td></tr></table>
+</div>
+<div id=reqinfo>
+<h1>Weitere Informationen</h1><p>".$row['Infotext']."</p>
+</div>
+<div id='reqcontact'><h1>Kontakt</h1><p>".$row['Mail']."</p><form name='mail' action='index.php?click=mail' method='post'><input type='hidden' name='mail' value=".$row['Mail']."><input type='submit' value='Nachricht senden'></form></div>
+
+
+";
+
+}
+}
+?>

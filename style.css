@@ -366,6 +366,10 @@ nav ul li:hover
 	color:white;
 	transition: all .25s ease;
 }
+#art:hover #finddesc, #art:hover #finddesc2{
+	background:black;
+	transition: all .25s ease;
+}
 #art:hover #finddesc table th, #art:hover #finddesc table td ,#art:hover #finddesc2 table th, #art:hover #finddesc2 table td {
 	color:white;
 	border-left:3px solid white;
@@ -394,6 +398,9 @@ filter div.src{
 
 #finddesc{
 	float:left;
+	padding:20px;
+	background:white;
+	border-radius:20px;
 	
 }
 #finddesc th{
@@ -424,6 +431,9 @@ filter div.src{
 }
 #finddesc2{
 	margin-top:30px;
+	padding:20px;
+	background:white;
+	border-radius:20px;
 	float:left;
 	
 }
@@ -480,7 +490,57 @@ filter div.src{
 	
 	
 }
-#objcontact{
+#reqdesc{
+	float:left;
+	padding:20px;
+	background:#cecece;
+	border-radius:20px;
+	margin:30 0 0 43;
+}
+#reqdesc th{
+	color:black;
+	font-size:45;
+	font-weight:bold;
+	text-align:center;
+	padding:10px;
+	border-left:3px solid black;
+	border-right:3px solid black;
+	min-width:100px;
+	
+	
+}
+#reqdesc td{
+	color:black;
+	font-size:20;
+	text-align:center;
+	padding:10px;
+	border-left:3px solid black;
+	border-right:3px solid black;
+	
+	
+
+}
+#reqinfo{
+	clear:left;
+	float:left;
+	width:500px;
+	display:block;
+	min-height:200px;
+	margin:40 0 20 43;
+	padding-left:20px;
+	border-left:2px solid black;
+	
+}
+#reqcontact{
+	
+	float:left;
+	min-height:200px;
+	padding-left:20px;
+	margin-top:40px;
+	border-left:2px solid black;
+}
+
+#objcontact{	
 	margin-top:20px;
 }
 
