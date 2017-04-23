@@ -1,13 +1,14 @@
 <?php
 if(!empty($_POST)){
-
-	if($_POST['aog']=='Angebote'){
-	
-		include("../../zugriffWE.php");
+	include("../../zugriffWE.php");
 		// Check connection
 		if ($mysqli->connect_error) {
 			die("Connection failed: " . $mysqli->connect_error);
 		}
+
+	if($_POST['aog']=='Angebote'){
+	
+		
 		$stmt=$mysqli->prepare("SELECT * FROM Angebot Where Ort=? ORDER BY ID DESC");
 		$stmt->bind_param('s',$ort);
 		$ort=strip_tags($_POST['ort']);
@@ -15,12 +16,34 @@ if(!empty($_POST)){
 		$result = $stmt->get_result();
 		foreach($result as $row){
 				echo "<a href='index.php?click=object&n=".$row['ID']."'><article id='art'>";
-				if($row['Bilder_ID']==''){
+				$stmt=$mysqli->prepare("SELECT * FROM Bilder Where Angebots_ID=? ORDER BY ID DESC");
+				$stmt->bind_param('i',$aid);
+				$aid=strip_tags($row['ID']);
+				$stmt->execute();
+				$result = $stmt->get_result();
+				$pic='';
+				foreach($result as $row2){
+					$pic="uploads/".$row2['Image_URL'];
+				}
+				if($pic==''){
 					$pic='no-image-available.jpg';
 				}
-				echo "<div class=src><p>".$row['Ort']."</p><div class=thumb><img src='".$pic."' class=thumb><div class=price><p>".$row['Preis']."€</p></div></div></div><p class=date></p><div style=max-width:520px;float:left;><p class=titl>".$row['Titel']."</p><div class=desc><div style=float:left;><table><tr><td><img src=rooms.png width='70px' height='70px'></td><td><img src=qm.png width='80px' height='80px'></td></tr><tr><td>".$row['Zimmer']." Zimmer</td><td>".$row['Quadratmeter']."m²</td></tr></table></div><div class=date><table><tr><td>Von: </td><td>".$row['Anfang']."</td></tr><tr><td>Bis: </td><td>".$row['Ende']."</td></tr></table></div></div></div><div style=clear:left;></div></article></a>";
+				echo "<div class=src><p>".$row['Ort']."</p><div class=thumb><img src='".$pic."' class='thumb'><div class=price><p>".$row['Preis']."€</p></div></div></div><div style=max-width:520px;float:left;><p class=titl>".$row['Titel']."</p><div class=desc><div id='finddesc'><table><tr><th>".$row['Zimmer']."</th><th>".$row['Quadratmeter']."m²</th></tr><tr><td>Zimmer</td><td>Größe</td></tr></table></div><div id=finddate><h2>Verfügbar</h2><p>Von: ".$row['Anfang']."</p><p>Bis: ".$row['Ende']."</p></div></div></div><div style=clear:left;></div></article></a>";
 
 			
 		}
+	}else if($_POST['aog']=='Gesuche'){
+		$stmt=$mysqli->prepare("SELECT * FROM Gesuch Where Ort=? ORDER BY ID DESC");
+		$stmt->bind_param('s',$ort);
+		$ort=strip_tags($_POST['ort']);
+		$stmt->execute();
+		$result = $stmt->get_result();
+		foreach($result as $row){
+			echo "<a href='index.php?click=object&n=".$row['ID']."'><article id='art'><div class=src><p>".$row['Ort']."</p></div><div style=max-width:860px;><div class=desc><div id='finddesc2'><table><tr><th>".$row['MinPreis']."€</th><th>".$row['MaxPreis']."€</th><th>".$row['Anfang']."</th><th>".$row['Ende']."</th></tr><tr><td>Minimal</td><td>Maximal</td><td>Einzug</td><td>Auszug</td></tr></table></div></div><div style=clear:left;></div></article></a>";
+		
+		
+		}
+	
+	
 	}
 }
