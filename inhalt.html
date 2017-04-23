@@ -16,7 +16,7 @@ else{echo "'index.php?click=login'";}
  class='button' style='margin-left:20px;line-height:3;'>Angebot einstellen</a>
 <?php
 if(isset($_SESSION['login'])) {
-	echo "<a href='index.php?click=myOffers' class='button' style='clear:both;margin-left:20px;line-height:3;'>Meine Angebote</a>";
+	echo "<a href='index.php?click=myOffers' class='button' style='float:left;margin-left:20px;'>Meine Angebote</a>";
 }
 ?>
 </div>
@@ -31,7 +31,7 @@ else{echo "'index.php?click=login'";}
  class='button' style='margin-left:20px;line-height:3;'>Gesuch einstellen</a> 
 <?php
 if(isset($_SESSION['login'])) {
-	echo "<a href='index.php?click=myRequests' class='button' style='clear:both;margin-left:20px;line-height:3;'>Meine Gesuche</a>";
+	echo "<a href='index.php?click=myRequests' class='button' style='float:left;margin-left:20px;'>Meine Gesuche</a>";
 }
 ?>
 </div>
