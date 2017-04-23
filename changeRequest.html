@@ -7,30 +7,41 @@ if(!empty($_POST)){
 	if ($mysqli->connect_error) {
 		$message['error'] = 'Datenbankverbindung fehlgeschlagen: ' . $mysqli->connect_error;
 	}
-	$stmt=$mysqli->prepare("INSERT INTO Gesuch (Ort, Anfang, Ende, Infotext, Benutzer_ID, MinPreis, MaxPreis)
-		VALUES(?,?,?,?,?,?,?)");
-	$stmt->bind_param('ssssidd',$stadtteil,$begin,$end,$info,$user,$minPrice,$maxPrice);
+	$stmt=$mysqli->prepare("UPDATE Gesuch SET Ort=?, Anfang=?, Ende=?, Infotext=?, MinPreis=?, MaxPreis=? WHERE ID=? AND Benutzer_ID=?");
+	$stmt->bind_param('ssssddii',$stadtteil,$begin,$end,$info,$minPrice,$maxPrice,$gID,$user);
 	$stadtteil=strip_tags($_POST['f']['stadtteil']);
 	$begin=strip_tags($_POST['f']['begin']);
 	$end=strip_tags($_POST['f']['end']);
 	$info=strip_tags($_POST['f']['info']);
-	$user=strip_tags($_SESSION['user']['ID']);
 	$minPrice=strip_tags($_POST['f']['minPrice']);
 	$maxPrice=strip_tags($_POST['f']['maxPrice']);
+	$gID=strip_tags($_GET['requestID']);
+	$user=strip_tags($_SESSION['user']['ID']);
 	$stmt->execute();
 	$mysqli->close();
 ?>
 
-<p> Gesuch erfolgreich eingestellt</p>
+<p> Gesuch erfolgreich geändert</p>
 
 <?php
 	}
 else{
+	$userID=strip_tags($_SESSION['user']['ID']);
+	$gID=strip_tags($_GET['requestID']);
+	$stmt="SELECT * FROM Gesuch g "
+			."WHERE Benutzer_ID=".$userID." AND ID=".$gID;
+	$result = $mysqli->query($stmt);
+	if($result->num_rows != 1){
 ?>
-<form name="form" action="./index.php?click=request" method="post">
+<p>Zu änderndes Gesuch konnte nicht gefunden werden!</p>
+<?php
+	} else {
+		$row=$result->fetch_assoc();
+?>
+<form name="form" action="./index.php?click=changeRequest&requestID=<?php echo $gID; ?>" method="post">
 <div>
 	<p><label for="stadtteil"> Stadtteil</html></p>
-	<select id="stadtteil" name="f[stadtteil]" type="text">
+	<select id="stadtteil" name="f[stadtteil]" type="text" value=$row['Ort']>
 		<option>Stuttgart-Mitte</option>
 		<option>Stuttgart-Nord</option>
 		<option>Stuttgart-Ost</option>
@@ -56,14 +67,14 @@ else{
 		<option>Zuffenhausen</option>
 	</select>	
 	<p><label for="infotext"> Infotext</html></p>
-	<textarea id="infotext" name="f[info]" type="text" cols="40" rows="5"></textarea>
+	<textarea id="infotext" name="f[info]" type="text" cols="40" rows="5" value=$row['Infotext']></textarea>
 	<table>
 		<tr>
 			<td> <p> Beginn Untervermietung</p> </td>
 			<td> <p> Ende Untervermietung</p> </td>
 		</tr>
-			<td> <input class="dat" type="date" id="begin" name="f[begin]" value="2017-01-01" style="margin-right: 50px;"> </td>
-			<td> <input class="dat" type="date" id="end"   name="f[end]" value="2017-01-01"> </td>
+			<td> <input class="dat" type="date" id="begin" name="f[begin]" value=$row['Anfang'] style="margin-right: 50px;"> </td>
+			<td> <input class="dat" type="date" id="end"   name="f[end]" value=$row['Ende']> </td>
 		</tr  style="padding-bottom: 10px;">
 	</table>
 	<table>
@@ -71,14 +82,15 @@ else{
 			<td> <p style="margin-right: 50px;"> Unteres Preislimit</p> </td>
 			<td> <p> Oberes Preislimit</p> </td>
 		</tr>
-			<td> <input class="dat" type="number" id="minPrice" name="f[minPrice]" style="margin-right: 50px;"> </td>
-			<td> <input class="dat" type="number" id="maxPrice"   name="f[maxPrice]"> </td>
+			<td> <input class="dat" type="number" id="minPrice" name="f[minPrice]" value=$row['MinPreis'] style="margin-right: 50px;"> </td>
+			<td> <input class="dat" type="number" id="maxPrice" name="f[maxPrice]" value=$row['MaxPreis']> </td>
 		</tr  style="padding-bottom: 10px;">
 	</table>
 	<input class="send" type="submit" id="send" value="Absenden!">
 </div>
 </form>
 <?php
+	}
 }
 }
 ?>
