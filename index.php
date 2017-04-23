@@ -192,16 +192,16 @@ else{
 <section class="wrapper">
 <h3 class="hidden">Footer content</h3>
 <article class="column">
-<h4>Copyright Sachen</h4>
-Denkt euch selbst was aus.
+<h4>Entwickler</h4>
+Tessa Haschtschek<br>Severin Neuner<br>Kevin Mangold<br>Florian Schmidt<br>Nicholas Dickel
 </article>
 <article class="column midlist">
-<h4>Infos</h4>
-Kontakt, Links, ...
+<h4>Informationen</h4>
+Zum Kontaktformular<br><a href='index.php?click=impressum'>Zum Impressum</a>
 </article>
 <article class="column rightlist">
-<h4>Nochwas</h4>
-Ich wünsche euch allen einen schönen Tag
+<h4>Haftung</h4>
+Diese Website basiert auf einem Projekt mit dem Ziel der Weiterbildung. Aus diesem Grund übernehmen wir keine Haftung für den Gebrauch der Seite.
 </article></section></footer>
 
 
