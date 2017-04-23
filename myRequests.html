@@ -26,13 +26,13 @@
 				<div class='lf'></div>
 			</div>
 			<div class='lower'>
-				<p><?php echo $row['Infotext']; ?></p>
+				<p><?php echo nl2br($row['Infotext']); ?></p>
 				<br><br>
 				<div class='lf'></div>
 			</div>
 			<div class='options'>
 				<a class=button style='line-height:2;' href='index.php?click=treffer'>Treffer anzeigen</a>
-				<a class=button style='line-height:2;' href='index.php?click=changeRequest&requsetID=<?php echo $row['ID']; ?>'>Ändern</a>
+				<a class=button style='line-height:2;' href='index.php?click=changeRequest&requestID=<?php echo $row['ID']; ?>'>Ändern</a>
 				<script language="javascript" type="text/javascript">
 					//forces user to click twice for deleting
 					function deleteRequest (RequestID) {

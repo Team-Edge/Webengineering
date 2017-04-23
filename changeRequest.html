@@ -20,12 +20,19 @@ if(!empty($_POST)){
 	$stmt->execute();
 	$mysqli->close();
 ?>
-
 <p> Gesuch erfolgreich geändert</p>
+<script language="javascript" type="text/javascript">
+	document.location="index.php?click=myRequests";
+</script>
+<p>Klicken Sie bitte <a href="index.php?click=myRequests">HIER</a>, um zur Übersicht zurückzukehren. </p>
 
 <?php
 	}
 else{
+	include("../../zugriffWE.php");
+	if ($mysqli->connect_error) {
+		$message['error'] = 'Datenbankverbindung fehlgeschlagen: ' . $mysqli->connect_error;
+	}
 	$userID=strip_tags($_SESSION['user']['ID']);
 	$gID=strip_tags($_GET['requestID']);
 	$stmt="SELECT * FROM Gesuch g "
@@ -41,7 +48,7 @@ else{
 <form name="form" action="./index.php?click=changeRequest&requestID=<?php echo $gID; ?>" method="post">
 <div>
 	<p><label for="stadtteil"> Stadtteil</html></p>
-	<select id="stadtteil" name="f[stadtteil]" type="text" value=$row['Ort']>
+	<select id="stadtteil" name="f[stadtteil]" type="text" value="<?php echo $row['Ort']; ?>">
 		<option>Stuttgart-Mitte</option>
 		<option>Stuttgart-Nord</option>
 		<option>Stuttgart-Ost</option>
@@ -67,14 +74,14 @@ else{
 		<option>Zuffenhausen</option>
 	</select>	
 	<p><label for="infotext"> Infotext</html></p>
-	<textarea id="infotext" name="f[info]" type="text" cols="40" rows="5" value=$row['Infotext']></textarea>
+	<textarea id="infotext" name="f[info]" type="text" cols="40" rows="5"><?php echo $row['Infotext']; ?></textarea>
 	<table>
 		<tr>
 			<td> <p> Beginn Untervermietung</p> </td>
 			<td> <p> Ende Untervermietung</p> </td>
 		</tr>
-			<td> <input class="dat" type="date" id="begin" name="f[begin]" value=$row['Anfang'] style="margin-right: 50px;"> </td>
-			<td> <input class="dat" type="date" id="end"   name="f[end]" value=$row['Ende']> </td>
+			<td> <input class="dat" type="date" id="begin" name="f[begin]" value="<?php echo $row['Anfang']; ?>" style="margin-right: 50px;"> </td>
+			<td> <input class="dat" type="date" id="end"   name="f[end]" value="<?php echo $row['Ende']; ?>"> </td>
 		</tr  style="padding-bottom: 10px;">
 	</table>
 	<table>
@@ -82,8 +89,8 @@ else{
 			<td> <p style="margin-right: 50px;"> Unteres Preislimit</p> </td>
 			<td> <p> Oberes Preislimit</p> </td>
 		</tr>
-			<td> <input class="dat" type="number" id="minPrice" name="f[minPrice]" value=$row['MinPreis'] style="margin-right: 50px;"> </td>
-			<td> <input class="dat" type="number" id="maxPrice" name="f[maxPrice]" value=$row['MaxPreis']> </td>
+			<td> <input class="dat" type="number" id="minPrice" name="f[minPrice]" value="<?php echo $row['MinPreis']; ?>" style="margin-right: 50px;"> </td>
+			<td> <input class="dat" type="number" id="maxPrice" name="f[maxPrice]" value="<?php echo $row['MaxPreis']; ?>"> </td>
 		</tr  style="padding-bottom: 10px;">
 	</table>
 	<input class="send" type="submit" id="send" value="Absenden!">
@@ -91,6 +98,7 @@ else{
 </form>
 <?php
 	}
+	$mysqli->close();
 }
 }
 ?>
