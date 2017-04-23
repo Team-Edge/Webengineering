@@ -172,6 +172,7 @@ else{
   
   }      
   else{
+	  echo"<style>.content{min-height:300;}</style>";
   include('inhalt.html');    
     
   }
