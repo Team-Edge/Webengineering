@@ -1,0 +1,101 @@
+<p>Ihre Angebote: </p>
+<br>
+<?php
+	include("../../zugriffWE.php");
+	if ($mysqli->connect_error) {
+		$message['error'] = 'Datenbankverbindung fehlgeschlagen: ' . $mysqli->connect_error;
+	}
+	$userID=strip_tags($_SESSION['user']['ID']);
+	$stmt="SELECT * FROM Angebot WHERE Benutzer_ID=".$userID." ORDER BY ID DESC";
+	$result = $mysqli->query($stmt);
+	
+	foreach($result as $row){
+		if($row['Bilder_ID']==''){
+			$pic='no-image-available.jpg';
+		}
+?>
+		<a href='index.php?click=object&n="<?php echo $row['ID']; ?>."'>
+			<article id='art'>
+				<div class=src>
+					<p><?php echo $row['Ort']; ?></p>
+					<div class=thumb>
+						<img src='<?php echo $pic ?>' class=thumb>
+						<div class=price>
+							<p><?php echo $row['Preis']; ?>€</p>
+						</div>
+					</div>
+				</div>
+				<p class=date></p>
+				<div style=max-width:520px;float:left;>
+					<p class=titl><?php echo $row['Titel']; ?></p>
+					<div class=desc>
+						<div style=float:left;>
+							<table>
+								<tr>
+									<td>
+										<img src=rooms.png width='70px' height='70px'>
+									</td>
+									<td>
+										<img src=qm.png width='80px' height='80px'>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<?php echo $row['Zimmer']; ?> Zimmer
+									</td>
+									<td>
+										<?php echo $row['Quadratmeter']; ?> m²
+									</td>
+								</tr>
+							</table>
+						</div>
+						<div class=date>
+							<table>
+								<tr>
+									<td>
+										Von: 
+									</td>
+									<td>
+										<?php echo $row['Anfang']; ?>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										Bis: 
+									</td>
+									<td>
+										<?php echo $row['Ende']; ?>
+									</td>
+								</tr>
+							</table>
+						</div>
+						<div style=clear:left;>
+							<a class=button href='index.php?click=treffer'>Treffer anzeigen</a>
+							<a class=button href='index.php?click=treffer'>Ändern</a>
+							<script language="javascript" type="text/javascript">
+								//forces user to click twice for deleting
+								function deleteOffer (OfferID) {
+									var elem = document.getElementById("delBtn_" + OfferID);
+									if(elem.innerHTML == "Löschen") {
+										elem.innerHTML = "Wirklich löschen?";
+										return false;
+									}
+									else {
+										elem.href = "index.php?click=deleteOffer&offerid="+OfferID;
+										return true;
+									}
+								}
+							</script>
+							<a id="delBtn_<?php echo $row['ID']; ?>" class=button onclick="deleteOffer(<?php echo $row['ID']; ?>)">Löschen</a>
+							<div style=clear:left;></div>
+						</div>
+					</div>
+				</div>
+				<div style=clear:left;></div>
+			</article>
+		</a>
+		<br>
+		<br>
+<?php
+	}
+?>

@@ -162,6 +162,10 @@ else{
 	 case 'impressum':include('impressum.html');break;
 	 case 'ch_pwd':include('ch_pwd.html');break;
 	 case 'delete':include('delete.html');break;
+	 case 'myOffers':include('myOffers.html');break;
+	 case 'myRequests':include('myRequests.html');break;
+	 case 'deleteOffer':include('deleteOffer.html');break;
+	 case 'deleteRequest':include('deleteRequest.html');break;
      default: include('inhalt.html');
    }  
    

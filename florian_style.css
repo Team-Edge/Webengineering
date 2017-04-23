@@ -1,0 +1,64 @@
+
+/* some linefeeds for floating */
+div.lf {
+	clear: both;
+}
+div.lfLeft {
+	width: 0px;
+	clear: left;
+}
+div.lfRight {
+	width: 0px;
+	clear: right;
+}
+
+
+/* base class for listItems
+ *
+ * this should equal #art in style.css
+ */
+article.listItem {
+	min-height:200px;
+	height:auto;
+	background-color:#d2d2d2;
+	color:black;
+	border-left:5px solid black;
+	border-right:5px solid black;
+	float:none;
+	padding: 10 10 10 10 ;
+	margin: 0 0 30 0;
+	box-shadow: 10px 10px 5px grey;
+	transition: all .25s ease;
+}
+
+
+.requestLI {}
+.requestLI div.upperLeft {
+	width: 50%;
+	float: left;
+	height: auto;
+	padding: 0px;
+	margin: 0px;
+	border: 0px;
+}
+.requestLI div.upperRight {
+	width: 50%;
+	float: right;
+	height: auto;
+	padding: 0px;
+	margin: 0px;
+	border: 0px;
+}
+.requestLI div.lower {
+	clear: both;
+	width: 100%;
+	height: auto;
+	padding: 0px;
+	margin: 0px;
+	border: 0px;
+}
+
+
+
+
+
