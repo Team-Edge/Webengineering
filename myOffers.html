@@ -6,20 +6,21 @@
 		$message['error'] = 'Datenbankverbindung fehlgeschlagen: ' . $mysqli->connect_error;
 	}
 	$userID=strip_tags($_SESSION['user']['ID']);
-	$stmt="SELECT * FROM Angebot WHERE Benutzer_ID=".$userID." ORDER BY ID DESC";
+	$stmt="SELECT a.*, b.Image_URL FROM Angebot a LEFT OUTER JOIN Bilder b ON a.Bilder_ID=b.ID WHERE a.Benutzer_ID=".$userID." ORDER BY a.ID DESC";
 	$result = $mysqli->query($stmt);
 	
 	foreach($result as $row){
+		$pic='uploads/'.$row['Image_URL'];
 		if($row['Bilder_ID']==''){
-			$pic='no-image-available.jpg';
-		}
+			$pic="no-image-available.jpg";
+		} 
 ?>
 		<a href='index.php?click=object&n="<?php echo $row['ID']; ?>."'>
 			<article id='art'>
 				<div class=src>
 					<p><?php echo $row['Ort']; ?></p>
 					<div class=thumb>
-						<img src='<?php echo $pic ?>' class=thumb>
+						<img src='<?php echo $pic; ?>' class=thumb>
 						<div class=price>
 							<p><?php echo $row['Preis']; ?>€</p>
 						</div>
