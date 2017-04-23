@@ -276,76 +276,7 @@ nav ul li:hover
 
 
 
-profiles
-{
-        left:80;
-        
-}
 
-profiles ul
-{
-        list-style:none;
-}
-
-profiles ul li
-{
-        display:block;
-        padding:3px 15px;
-		height:30px;
-		width:400px;
-		background-color:#b3b3b3;
-		outline:0;
-		border:1px solid black;
-		border-radius:0px 10px 0px 10px;
-		margin-bottom:20px;
-		color:black;
-		box-shadow: 10px 10px 5px grey;
-}
-
-profiles ul #lidel
-{
-        position:relative;
-		float:right;
-		
-		background-color:transparent;
-		border:0;
-		color:red;
-		box-shadow:none;
-		
-		
-}
-
-profiles ul li:hover{
-		color:orange;
-		background-color: #595959;
-		transition: all .25s ease;
-}
-profiles #set{
-	padding-right:10px;
-	padding-left:5px;
-	padding-top:2px;
-	float:left;
-}
-profiles #del{
-	position:absolute;
-	left:390px;
-	top:4px;
-}
-profiles #del2{
-	position:absolute;
-	height:22px;
-	left:335px;
-	top:2px;
-	background-color:#CB2323;
-	padding:7px 2px 0px 5px;
-	border:3px solid black;
-	border-radius:4px;
-	color:white;
-}
-profiles pp{
-	position:absolute;
-	top:8px;
-}
 
 #art{
 	min-height:220px;
@@ -361,9 +292,7 @@ profiles pp{
 	transition: all .25s ease;
 }
 
-#art p.date{
-	color: #595959;
-}
+
 #art p.titl{
 	font-size:20px;
 	text-decoration:underline;
@@ -373,15 +302,8 @@ profiles pp{
 	
 }
 
-#art div.desc table tr td{
-	text-align:center;
-	padding-bottom:20px;
-	padding-right:20px;
-}
-#art .date{
-	float:left;
-	margin:20px 0px 0px 10px;
-}
+
+
 #art img.thumb{
 
 	max-height:180px;
@@ -403,6 +325,7 @@ profiles pp{
 	margin-right:20px;
 	height:180px;
 	width:320px;
+	background:grey;
 	
 }
 #art .price{
@@ -431,21 +354,29 @@ profiles pp{
 	transition: all .25s ease;
 }
 #art:hover .titl{
-	color:orange;
-	transition: all .25s ease;
-}
-#art:hover p{
 	color:white;
 	transition: all .25s ease;
 }
+
 #art:hover .src p {
 	color:#C4C4C4;
 	transition: all .25s ease;
 }
-#art:hover .date {
-	color:#C4C4C4;
+#art:hover .desc {
+	color:white;
 	transition: all .25s ease;
 }
+#art:hover #finddesc table th, #art:hover #finddesc table td ,#art:hover #finddesc2 table th, #art:hover #finddesc2 table td {
+	color:white;
+	border-left:3px solid white;
+	border-right:3px solid white;
+	transition: all .25s ease;
+}
+#art:hover .price{
+	opacity:1;
+	transition: all .25s ease;
+}
+
 #art div.src p{
 	font-size:20px;
 	font-style:italic;
@@ -461,6 +392,63 @@ filter div.src{
 	float:left;
 }
 
+#finddesc{
+	float:left;
+	
+}
+#finddesc th{
+	color:black;
+	font-size:55;
+	font-weight:bold;
+	text-align:center;
+	padding:10px;
+	border-left:3px solid black;
+	border-right:3px solid black;
+	min-width:100px;
+	
+	
+}
+#finddesc td{
+	color:black;
+	font-size:20;
+	text-align:center;
+	padding:10px;
+	border-left:3px solid black;
+	border-right:3px solid black;
+	
+	
+}
+#finddate{
+	float:left;
+	margin:20 0 0 40;
+}
+#finddesc2{
+	margin-top:30px;
+	float:left;
+	
+}
+#finddesc2 th{
+	color:black;
+	font-size:45;
+	font-weight:bold;
+	text-align:center;
+	padding:10px;
+	border-left:3px solid black;
+	border-right:3px solid black;
+	min-width:100px;
+	
+	
+}
+#finddesc2 td{
+	color:black;
+	font-size:20;
+	text-align:center;
+	padding:10px;
+	border-left:3px solid black;
+	border-right:3px solid black;
+	
+	
+}
 #objtitl{
 	color:#46486c;
 	padding-left:43px;
@@ -504,8 +492,8 @@ filter div.src{
 	display:block;
 	margin:20 0 0 43;
 	padding-left:20px;
-	border-left:2px dotted black;
-	border-top:2px dotted black;
+	border-left:2px solid black;
+
 
 }
 #objavailable{
@@ -515,8 +503,8 @@ filter div.src{
 	display:block;
 	margin:20 0 0 43;
 	padding-left:20px;
-	border-left:2px dotted black;
-	border-top:2px dotted black;
+	border-left:2px solid black;
+	
 
 }
 #objinfo{
@@ -527,150 +515,12 @@ filter div.src{
 	min-height:200px;
 	margin:40 0 20 43;
 	padding-left:20px;
-	border-left:2px dotted black;
-	border-top:2px dotted black;
-}
-
-
-
-
-details{
-	margin-bottom:10px;
-	
-	
-}
-DETAILS[open] SUMMARY ~ * 
-{
- animation: sweep .5s ease-in-out;
-}
-
-@keyframes sweep 
-{
- 0%    {opacity: 0; margin-left: -10px}
- 100%  {opacity: 1; margin-left: 0px}
-}
-
-
-.top summary{
-	background-color:#b3b3b3;
-	width:400px;
-	height:30px;
-	padding:10px 0px 0px 10px;
-	border:1px solid black;
-	border-radius:0px 10px 0px 10px;
-	box-shadow:10px 10px 5px grey;
-	margin-bottom:20px;
-	
-}
-.top summary:hover{
-	color:orange;
-	background-color:#595959;
-}
-.top ul li{
-	margin-top:10px;
+	border-left:2px solid black;
 	
 }
 
 
-.bot{
-	margin-left:40px;
-}
-.bot summary{
-	background-color:#b3b3b3;
-	width:400px;
-	height:30px;
-	padding:10px 0px 0px 10px;
-	border:1px solid black;
-	border-radius:0px 10px 0px 10px;
-	margin-bottom:20px;
-	
-}
-.bot summary:hover{
-	color:orange;
-	background-color:#595959;
-}
-.bot ul li{
-	background-color:#b3b3b3;
-	width:400px;
-	height:30px;
-	margin:10 0 20 40px;
-	padding:10px 0px 0px 10px;
-	border:1px solid black;
-	border-radius:0px 10px 0px 10px;
-	box-shadow:10px 10px 5px grey;
-	
-}
 
-.del{
-	float:right;
-	margin-top: -5px;
-	
-	padding-right:5px;
-	
-}
-.del2{
-	float:right;
-	margin-top: 5px;
-	margin-right:490px;
-	
-	padding-right:5px;
-}
-
-.newW {
-	width:400px;
-	margin-left:40px;
-	margin-top:20px;
-	padding:10px;
-	border: 2px dotted grey;
-	border-radius:0px 30px 0px 30px;
-}
-.newW p{
-	font-size:20px;
-}
-.newK{
-	margin-left:40px;
-}
-.newOpt input{
-	margin-top:10px;
-	margin-left:40px;
-	width:auto;
-}
-.newOpt select{
-	margin-top:10px;
-	margin-left:20px;
-	width:auto;
-}
-.invert{
-	float:left;
-	color:#CB2323;
-}
-.normal{
-	float:left;
-}
-.additional{
-	background-color:#595959;
-	color:white;
-	width:352px;
-	margin-left:80px;
-	margin-top:-20px;
-	padding:10px;
-	display:none;
-	border-radius:0px 0px 0px 10px;
-	box-shadow:10px 8px 5px grey;
-	
-}
-details li:hover + .additional{
-	
-	display:block;
-	animation: add .3s ease-out;
-}
-
-
-@keyframes add 
-{
- 0%    {opacity: 0; margin-top: -30px}
- 100%  {opacity: 1; margin-top: -20px}
-}
 
 
 #mobileMenu
