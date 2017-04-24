@@ -7,52 +7,60 @@
 		$message['error'] = 'Datenbankverbindung fehlgeschlagen: ' . $mysqli->connect_error;
 	}
 	$userID=strip_tags($_SESSION['user']['ID']);
-	$stmt="SELECT g.*, b.`Name` FROM Gesuch g "
-			."INNER JOIN Benutzer b ON g.Benutzer_ID=b.ID "
-			."WHERE Benutzer_ID=".$userID." ORDER BY ID DESC";
+	$stmt="SELECT g.* FROM Gesuch g WHERE Benutzer_ID=".$userID." ORDER BY ID DESC";
 	$result = $mysqli->query($stmt);
 	foreach($result as $row){
 ?>
-		<article class='listItem requestLI'>
-			<div class='upperLeft'>
-				<p>Name: <?php echo $row['Name']; ?></p>
-				<p>Preis: <?php echo $row['MinPreis'] ?> € bis <?php echo $row['MaxPreis']; ?> €</p>
-				<div class='lf'></div>
-			</div>
-			<div class='upperRight'>
-				<p>Ort: <?php echo $row['Ort']; ?></p>
-				<p>Von: <?php echo $row['Anfang']; ?></p>
-				<p>Bis: <?php echo $row['Ende']; ?></p>
-				<div class='lf'></div>
-			</div>
-			<div class='lower'>
-				<p><?php echo nl2br($row['Infotext']); ?></p>
-				<br><br>
-				<div class='lf'></div>
-			</div>
-			<div class='options'>
-				<a class=button style='line-height:2;' href='index.php?click=treffer'>Treffer anzeigen</a>
-				<a class=button style='line-height:2;' href='index.php?click=changeRequest&requestID=<?php echo $row['ID']; ?>'>Ändern</a>
-				<script language="javascript" type="text/javascript">
-					//forces user to click twice for deleting
-					function deleteRequest (RequestID) {
-						var elem = document.getElementById("delBtn_" + RequestID);
-						if(elem.innerHTML == "Löschen") {
-							elem.innerHTML = "Wirklich löschen?";
-							return false;
+
+		<a href='index.php?click=requestinfo&n=<?php echo $row['ID']; ?>'>
+			<article id='art'>
+				<div class=src>
+					<p><?php echo $row['Ort']; ?></p>
+				</div>
+				<div style=max-width:860px;>
+					<div class=desc>
+						<div id='finddesc2'>
+							<table>
+								<tr>
+									<th><?php echo $row['MinPreis']; ?>€</th>
+									<th><?php echo $row['MaxPreis']; ?>€</th>
+									<th><?php echo $row['Anfang']; ?></th>
+									<th><?php echo $row['Ende']; ?></th>
+								</tr>
+								<tr>
+									<td>Minimal</td>
+									<td>Maximal</td>
+									<td>Einzug</td>
+									<td>Auszug</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div style="clear:left;padding:30;">
+					<a class=button href='index.php?click=treffer'>Treffer anzeigen</a>
+					<a class=button href="index.php?click=changeRequest&requestID=<?php echo $row['ID']; ?>">Ändern</a>
+					<script language="javascript" type="text/javascript">
+						//forces user to click twice for deleting
+						function deleteRequest (RequestID) {
+							var elem = document.getElementById("delBtn_" + RequestID);
+							if(elem.innerHTML == "Löschen") {
+								elem.innerHTML = "Wirklich löschen?";
+								return false;
+							}
+							else {
+								elem.href = "index.php?click=deleteRequest&requestid="+RequestID;
+								return true;
+							}
 						}
-						else {
-							elem.href = "index.php?click=deleteRequest&requestid="+RequestID;
-							return true;
-						}
-					}
-				</script>
-				<a id="delBtn_<?php echo $row['ID']; ?>" class=button style='line-height:2;' onclick="deleteRequest(<?php echo $row['ID']; ?>); ">Löschen</a>
-				<div class='lf'></div>
-			</div>
-			<div class='lf'></div>
-		</article>
-		<br>
+					</script>
+					<a id="delBtn_<?php echo $row['ID']; ?>" class=button onclick="deleteRequest(<?php echo $row['ID']; ?>)">Löschen</a>
+					<div style=clear:left;></div>
+				</div>
+				<div style=clear:left;></div>
+			</article>
+		</a>
+
 		<br>
 <?php
 	}
