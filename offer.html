@@ -6,39 +6,39 @@ if(!empty($_POST)){
 	//Abfrage, ob alle Felder ausgefüllt wurden
 	//Stadtteil ist immer ausgefüllt, da durch Dropdownmenü ausgewählt
 	$unset=false;
-	if(empty($_POST['f']['adresse']){
+	if(empty($_POST['f']['adresse'])){
 		$unset=true;
 		echo "Bitte eine Adresse eingeben";
 	}
-	if(empty($_POST['f']['PLZ']){
+	if(empty($_POST['f']['PLZ'])){
 		$unset=true;
 		echo "Bitte eine Postleitzahl eingeben";
 	}
-	if(empty($_POST['f']['quadratmeter']){
+	if(empty($_POST['f']['quadratmeter'])){
 		$unset=true;
 		echo "Bitte die Quadratmeter eingeben";
 	}
-	if(empty($_POST['f']['zimmer']){
+	if(empty($_POST['f']['zimmer'])){
 		$unset=true;
 		echo "Bitte die Anzahl der Zimmer eingeben";
 	}
-	if(empty($_POST['f']['preis']){
+	if(empty($_POST['f']['preis'])){
 		$unset=true;
 		echo "Bitte einen Preis angeben";
 	}
-	if(empty($_POST['f']['titel']){
+	if(empty($_POST['f']['titel'])){
 		$unset=true;
 		echo "Bitte einen Anzeigetitel angeben";
 	}
-	if(empty($_POST['f']['begin']){
+	if(empty($_POST['f']['begin'])){
 		$unset=true;
 		echo "Bitte den Beginn des Untervermietungs-Zeitraums angeben";
 	}
-	if(empty($_POST['f']['end']){
+	if(empty($_POST['f']['end'])){
 		$unset=true;
 		echo "Bitte das Ende des Untervermietungs-Zeitraums angeben";
 	}
-	if(empty($_POST['f']['info']){
+	if(empty($_POST['f']['info'])){
 		$unset=true;
 		echo "Bitte einen Infotext eingeben";
 	}

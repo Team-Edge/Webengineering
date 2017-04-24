@@ -6,23 +6,23 @@ if(!empty($_POST)){
 	//Überprüfung ob alle Felder ausgefüllt sind
 	$unset=false;
 	//Stadtteil ist immer gesetzt, da er über ein Dropdownmenü ausgewählt wird
-	if(empty($_POST['f']['begin']){
+	if(empty($_POST['f']['begin'])){
 		$unset=true;
 		echo "Bitte den Beginn des Untervermietungs-Zeitraums angeben";
 	}
-	if(empty($_POST['f']['end']){
+	if(empty($_POST['f']['end'])){
 		$unset=true;
 		echo "Bitte das Ende des Untervermietungs-Zeitraums angeben";
 	}
-	if(empty($_POST['f']['info']){
+	if(empty($_POST['f']['info'])){
 		$unset=true;
 		echo "Bitte einen Infotext eingeben";
 	}
-	if(empty($_POST['f']['minPrice']){
+	if(empty($_POST['f']['minPrice'])){
 		$unset=true;
 		echo "Bitte ein unteres Preislimit angeben";
 	}
-	if(empty($_POST['f']['maxPrice']){
+	if(empty($_POST['f']['maxPrice'])){
 		$unset=true;
 		echo "Bitte ein oberes Preislimit angeben";
 	}

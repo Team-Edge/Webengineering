@@ -1,5 +1,7 @@
 <?php
 //This code runs if the form has been submitted
+$rsent=false;
+$errors=false;
 if (isset($_POST['submit']))
 {
 
@@ -7,6 +9,7 @@ if (isset($_POST['submit']))
 $email = $_POST['remail'];
 if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
      $error[] = 'Please enter a valid email address';
+	 $errors=true;
 }
 
 include("../../zugriffWE.php");
@@ -15,19 +18,20 @@ if ($mysqli->connect_error) {
 }
 
 // checks if the username is in use
-$check = mysql_query("SELECT mail FROM Benutzer WHERE email = '$email'")or die(mysql_error());
-$check2 = mysql_num_rows($check);
+$check = "SELECT mail FROM Benutzer WHERE email = $email'";
+$check2 = mysqli->query($check);
 
 //if the name exists it gives an error
-if ($check2 == 0) {
+if ($check2->num_rows == 0) {
+$errors=true;
 $error[] = 'Ein Account mit dieser Email-Adresse konnte leider nicht gefunden werden';
 }
 
 // if no errors then carry on
-if (!$error) {
+if (!$errors) {
 
-$query = mysql_query("SELECT username FROM Benutzer WHERE email = '$email' ")or die (mysql_error());
-$r = mysql_fetch_object($query);
+$query = "SELECT username FROM Benutzer WHERE email = '$email' ";
+$r = mysqli->query($query);
 
 //create a new random password
 
@@ -50,7 +54,7 @@ $additionalheaders = "From: <uv.kontinuum@gmail.com>rn";
 mail($to, $subject, $body, $additionalheaders);
 
 //update database
-$sql = mysql_query("UPDATE Benutzer SET password='$pass' WHERE email = '$email'")or die (mysql_error());
+$sql = mysqli->query("UPDATE Benutzer SET password='$pass' WHERE email = '$email'");
 $rsent = true;
 
 
@@ -70,7 +74,7 @@ if (!empty($error))
 if ($rsent == true){
     echo "<p>Eine Email wurde an $email gesendet.</p>n";
     } else {
-    echo "<p>Bitte gib die Email-Adresse an, die du für deinen Account bei der Registrierung angegeben hast.<br>Ein neues Passwort wird dann an diese Email-Adresse geschickt.</p>n";
+    echo "<p>Bitte gib die Email-Adresse an, die du für deinen Account bei der Registrierung angegeben hast.<br>Ein neues Passwort wird dann an diese Email-Adresse geschickt.</p>";
     }
 
 ?>
