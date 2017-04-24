@@ -1,0 +1,88 @@
+<?php
+if(isset($_SESSION['login'])){
+if(!empty($_POST)){
+/**
+ * This example shows sending a message using PHP's mail() function.
+ */
+
+require '../../phpmailer/PHPMailerAutoload.php';
+
+//Create a new PHPMailer instance
+$mail = new PHPMailer;
+
+$mail->IsSMTP();
+$mail->Host = "smtp.gmail.com";
+
+// optional
+// used only when SMTP requires authentication  
+$mail->SMTPAuth = true;
+$mail->Username = 'uv.kontinuum@gmail.com';
+$mail->Password = 'kontinuum';
+
+
+include("../../zugriffWE.php");
+if ($mysqli->connect_error) {
+$message['error'] = 'Datenbankverbindung fehlgeschlagen: ' . $mysqli->connect_error;
+}
+$stmt=$mysqli->prepare("SELECT * FROM Benutzer WHERE ID=?");
+$stmt->bind_param('i',$uID);
+
+
+$uID=strip_tags($_SESSION['user']['ID']);
+$stmt->execute();
+$result = $stmt->get_result();
+foreach($result as $row){
+
+//Für Umlaute
+$mail->CharSet = 'utf-8'; 
+//Set who the message is to be sent from
+$mail->setFrom($row['Mail'], $row['Name']);
+//Set an alternative reply-to address
+$mail->addReplyTo($row['Mail'], $row['Name']);
+
+}
+
+
+
+
+
+//Set who the message is to be sent to
+$mail->addAddress($_POST['address']);
+//Set the subject line
+$mail->Subject = $_POST['subject'];
+ 
+
+ $mail->IsHTML(true); //Versand im HTML-Format festlegen
+
+$mail->Body=nl2br($_POST['message']);
+
+
+
+//send the message, check for errors
+if (!$mail->send()) {
+    echo "Mailer Error: " . $mail->ErrorInfo;
+} else {
+    echo "<p>Vielen Dank für ihre Nachricht!</p>";
+	sleep(3);
+	header('Location: index.php');
+}
+
+
+
+}else{
+	?>
+	<h1>Kontakt</h1>
+	<form name='mail' action='index.php?click=contact' method='post'>
+	<input type='hidden' name='address' value='uv.kontinuum@gmail.com'>
+	<p>Betreff</p><input type='text' name='subject'>
+	<p>Nachricht</p><textarea rows="10" cols="80" name='message' style='resize:none;'></textarea><br>
+	<input type='submit' name='submit' value='Absenden'>
+	
+	</form>
+	
+	
+	<?php
+}
+}else{
+header('Location: index.php?click=login');}
+?>
