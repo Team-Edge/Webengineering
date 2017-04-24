@@ -1,0 +1,132 @@
+﻿<p>Ihr Gesuch mit passenden Angeboten: </p>
+<br>
+<?php
+	include("../../zugriffWE.php");
+	if ($mysqli->connect_error) {
+		$message['error'] = 'Datenbankverbindung fehlgeschlagen: ' . $mysqli->connect_error;
+	}
+	$userID=strip_tags($_SESSION['user']['ID']);
+	$gID=strip_tags($_GET['requestID']);
+	$stmt=$mysqli->prepare("SELECT * FROM Gesuch WHERE Benutzer_ID=? AND ID=?");
+	$stmt->bind_param('ii', $userID, $gID);
+	$stmt->execute();
+	$result = $stmt->get_result();
+	foreach($result as $row){
+?>
+
+		<a href='index.php?click=requestinfo&n=<?php echo $row['ID']; ?>'>
+			<article id='art'>
+				<div class=src>
+					<p><?php echo $row['Ort']; ?></p>
+				</div>
+				<div style=max-width:860px;>
+					<div class=desc>
+						<div id='finddesc2'>
+							<table>
+								<tr>
+									<th><?php echo $row['MinPreis']; ?>€</th>
+									<th><?php echo $row['MaxPreis']; ?>€</th>
+									<th><?php echo $row['Anfang']; ?></th>
+									<th><?php echo $row['Ende']; ?></th>
+								</tr>
+								<tr>
+									<td>Minimal</td>
+									<td>Maximal</td>
+									<td>Einzug</td>
+									<td>Auszug</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div style="clear:left;padding:30;">
+					<a class=button href='index.php?click=treffer'>Treffer anzeigen</a>
+					<a class=button href="index.php?click=changeRequest&requestID=<?php echo $row['ID']; ?>">Ändern</a>
+					<script language="javascript" type="text/javascript">
+						//forces user to click twice for deleting
+						function deleteRequest (RequestID) {
+							var elem = document.getElementById("delBtn_" + RequestID);
+							if(elem.innerHTML == "Löschen") {
+								elem.innerHTML = "Wirklich löschen?";
+								return false;
+							}
+							else {
+								elem.href = "index.php?click=deleteRequest&requestid="+RequestID;
+								return true;
+							}
+						}
+					</script>
+					<a id="delBtn_<?php echo $row['ID']; ?>" class=button onclick="deleteRequest(<?php echo $row['ID']; ?>)">Löschen</a>
+					<div style=clear:left;></div>
+				</div>
+				<div style=clear:left;></div>
+			</article>
+		</a>
+
+		<br>
+<?php
+		$stmt2=$mysqli->prepare("SELECT a.* FROM Angebot a "
+								."INNER JOIN Treffer t ON t.Angebot_ID = a.ID "
+								."INNER JOIN Gesuch g ON t.Gesuch_ID = g.ID "
+								."WHERE g.Benutzer_ID=? AND g.ID=? ORDER BY t.Gesuch_Rating DESC");
+		$stmt2->bind_param('ii', $userID, $row['ID']);
+		$stmt2->execute();
+		$result2 = $stmt2->get_result();
+		foreach($result2 as $row2){
+			
+			$stmt3=$mysqli->prepare("SELECT * FROM Bilder Where Angebots_ID=? ORDER BY ID DESC");
+			$stmt3->bind_param('i',$aid);
+			$aid=strip_tags($row2['ID']);
+			$stmt3->execute();
+			$result3 = $stmt3->get_result();
+			$pic='';
+			foreach($result3 as $row3){
+				$pic="uploads/".$row3['Image_URL'];
+			}
+			if($pic==''){
+				$pic='no-image-available.jpg';
+			}
+?>
+		
+			<a href='index.php?click=object&n=<?php echo $row2['ID']; ?>'>
+				<article id='art'>
+					<div class=src>
+						<p><?php echo $row2['Ort']; ?></p>
+						<div class=thumb>
+							<img src='<?php echo $pic; ?>' class='thumb'>
+							<div class=price>
+								<p><?php echo $row2['Preis']; ?>€</p>
+							</div>
+						</div>
+					</div>
+					<div style=max-width:520px;float:left;>
+						<p class=titl><?php echo $row2['Titel']; ?></p>
+						<div class=desc>
+							<div id='finddesc'>
+								<table>
+									<tr>
+										<th><?php echo $row2['Zimmer']; ?></th>
+										<th><?php echo $row2['Quadratmeter']; ?>m²</th>
+									</tr>
+									<tr>
+										<td>Zimmer</td>
+										<td>Größe</td>
+									</tr>
+								</table>
+							</div>
+							<div id=finddate>
+								<h2>Verfügbar</h2>
+								<p>Von: <?php echo $row2['Anfang']; ?></p>
+								<p>Bis: <?php echo $row2['Ende']; ?></p>
+							</div>
+						</div>
+					</div>
+					<div style=clear:left;></div>
+				</article>
+			</a>
+		
+<?php		
+		}
+	}
+	$mysqli->close();
+?>

@@ -169,6 +169,8 @@ else{
 	case 'requestinfo':include('requestinfo.html');break;
 	case 'changeRequest':include('changeRequest.html');break;
 	case 'changeOffer':include('changeOffer.html');break;
+	case 'myOfferHits':include('myOfferHits.html');break;
+	case 'myRequestHits':include('myRequestHits.html');break;
      default: include('inhalt.html');
    }  
    

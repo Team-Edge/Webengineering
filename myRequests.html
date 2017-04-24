@@ -1,4 +1,3 @@
-<link rel="stylesheet" href="florian_style.css" type="text/css" media="screen" />
 <p>Ihre Gesuche: </p>
 <br>
 <?php
@@ -38,7 +37,7 @@
 					</div>
 				</div>
 				<div style="clear:left;padding:30;">
-					<a class=button href='index.php?click=treffer'>Treffer anzeigen</a>
+					<a class=button href="index.php?click=myRequestHits&requestID=<?php echo $row['ID']; ?>">Treffer anzeigen</a>
 					<a class=button href="index.php?click=changeRequest&requestID=<?php echo $row['ID']; ?>">Ändern</a>
 					<script language="javascript" type="text/javascript">
 						//forces user to click twice for deleting
