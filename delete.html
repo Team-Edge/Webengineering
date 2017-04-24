@@ -10,6 +10,9 @@
 	$uID=strip_tags($_SESSION['user']['ID']);
 	$stmt->execute();
 	
-	document.location.replace("index.php?click=logout");
+	session_destroy();
+
+        echo '<meta http-equiv="Refresh" content="1; URL=https://occaso.me/webengineering">';
+
 	
 ?>
