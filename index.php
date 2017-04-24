@@ -171,6 +171,7 @@ else{
 	case 'changeOffer':include('changeOffer.html');break;
 	case 'myOfferHits':include('myOfferHits.html');break;
 	case 'myRequestHits':include('myRequestHits.html');break;
+	case 'contact':include('contact.html');break;
      default: include('inhalt.html');
    }  
    
@@ -203,7 +204,7 @@ Tessa Haschtschek<br>Severin Neuner<br>Kevin Mangold<br>Florian Schmidt<br>Nicho
 </article>
 <article class="column midlist">
 <h4>Informationen</h4>
-Zum Kontaktformular<br><a href='index.php?click=impressum'>Zum Impressum</a>
+<a href='index.php?click=contact'>Zum Kontaktformular</a><br><a href='index.php?click=impressum'>Zum Impressum</a>
 </article>
 <article class="column rightlist">
 <h4>Haftung</h4>
