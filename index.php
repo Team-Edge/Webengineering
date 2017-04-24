@@ -150,6 +150,7 @@ else{
     
    switch($_GET['click']){
      case 'login': include('login.html');break;  
+	 case 'newpw': include('newpw.html');break;
 	 case 'register': include('register.html');break; 
 	case 'logout': include('logout.html');break; 
     case 'account':include('account.html');break;

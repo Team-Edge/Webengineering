@@ -3,40 +3,83 @@
 <?php
 if(isset($_SESSION['login'])){
 if(!empty($_POST)){
-	include("../../zugriffWE.php");
-	if ($mysqli->connect_error) {
-		$message['error'] = 'Datenbankverbindung fehlgeschlagen: ' . $mysqli->connect_error;
+	//Abfrage, ob alle Felder ausgefüllt wurden
+	//Stadtteil ist immer ausgefüllt, da durch Dropdownmenü ausgewählt
+	$unset=false;
+	if(empty($_POST['f']['adresse']){
+		$unset=true;
+		echo "Bitte eine Adresse eingeben";
 	}
-	$stmt=$mysqli->prepare("INSERT INTO Angebot (Ort, Straße, PLZ, Quadratmeter, Zimmer, Preis, Titel, Anfang, Ende, Infotext, Benutzer_ID)
-		VALUES(?,?,?,?,?,?,?,?,?,?,?)");
-	$stmt->bind_param('sssiidssssi',$stadtteil,$adresse,$PLZ,$qm,$zimmer,$preis,$titel,$begin,$end,$info,$user);
-	$stadtteil=strip_tags($_POST['f']['stadtteil']);
-	$adresse=strip_tags($_POST['f']['adresse']);
-	$PLZ=strip_tags($_POST['f']['PLZ']);
-	$qm=strip_tags($_POST['f']['quadratmeter']);
-	$zimmer=strip_tags($_POST['f']['zimmer']);
-	$preis=strip_tags($_POST['f']['preis']);
-	$titel=strip_tags($_POST['f']['title']);
-	$begin=strip_tags($_POST['f']['begin']);
-	$end=strip_tags($_POST['f']['end']);
-	$info=strip_tags($_POST['f']['info']);
-	$user=strip_tags($_SESSION['user']['ID']);
-	$stmt->execute();
+	if(empty($_POST['f']['PLZ']){
+		$unset=true;
+		echo "Bitte eine Postleitzahl eingeben";
+	}
+	if(empty($_POST['f']['quadratmeter']){
+		$unset=true;
+		echo "Bitte die Quadratmeter eingeben";
+	}
+	if(empty($_POST['f']['zimmer']){
+		$unset=true;
+		echo "Bitte die Anzahl der Zimmer eingeben";
+	}
+	if(empty($_POST['f']['preis']){
+		$unset=true;
+		echo "Bitte einen Preis angeben";
+	}
+	if(empty($_POST['f']['titel']){
+		$unset=true;
+		echo "Bitte einen Anzeigetitel angeben";
+	}
+	if(empty($_POST['f']['begin']){
+		$unset=true;
+		echo "Bitte den Beginn des Untervermietungs-Zeitraums angeben";
+	}
+	if(empty($_POST['f']['end']){
+		$unset=true;
+		echo "Bitte das Ende des Untervermietungs-Zeitraums angeben";
+	}
+	if(empty($_POST['f']['info']){
+		$unset=true;
+		echo "Bitte einen Infotext eingeben";
+	}
 	
-	$user2=strip_tags($_SESSION['user']['ID']);
-	$sql = "SELECT ID FROM Angebot WHERE Benutzer_ID=".$user2." ORDER BY ID DESC LIMIT 1";
+	
+	if(!unset){
+		include("../../zugriffWE.php");
+		if ($mysqli->connect_error) {
+			$message['error'] = 'Datenbankverbindung fehlgeschlagen: ' . $mysqli->connect_error;
+		}
+		$stmt=$mysqli->prepare("INSERT INTO Angebot (Ort, Straße, PLZ, Quadratmeter, Zimmer, Preis, Titel, Anfang, Ende, Infotext, Benutzer_ID)
+			VALUES(?,?,?,?,?,?,?,?,?,?,?)");
+		$stmt->bind_param('sssiidssssi',$stadtteil,$adresse,$PLZ,$qm,$zimmer,$preis,$titel,$begin,$end,$info,$user);
+		$stadtteil=strip_tags($_POST['f']['stadtteil']);
+		$adresse=strip_tags($_POST['f']['adresse']);
+		$PLZ=strip_tags($_POST['f']['PLZ']);
+		$qm=strip_tags($_POST['f']['quadratmeter']);
+		$zimmer=strip_tags($_POST['f']['zimmer']);
+		$preis=strip_tags($_POST['f']['preis']);
+		$titel=strip_tags($_POST['f']['title']);
+		$begin=strip_tags($_POST['f']['begin']);
+		$end=strip_tags($_POST['f']['end']);
+		$info=strip_tags($_POST['f']['info']);
+		$user=strip_tags($_SESSION['user']['ID']);
+		$stmt->execute();
+		
+		$user2=strip_tags($_SESSION['user']['ID']);
+		$sql = "SELECT ID FROM Angebot WHERE Benutzer_ID=".$user2." ORDER BY ID DESC LIMIT 1";
 
-	$result = $mysqli->query($sql);
-	$user3=strip_tags($_SESSION['user']['ID']);
-	if ($result->num_rows > 0) {
-    // output data of each row
-    while($row = $result->fetch_assoc()) {
-		$stmt="UPDATE Bilder SET Angebots_ID=".$row["ID"]." WHERE Angebots_ID=0 AND Benutzer_ID=".$user3;
-		$mysqli->query($stmt);
-    }
+		$result = $mysqli->query($sql);
+		$user3=strip_tags($_SESSION['user']['ID']);
+		if ($result->num_rows > 0) {
+			// output data of each row
+			while($row = $result->fetch_assoc()) {
+				$stmt="UPDATE Bilder SET Angebots_ID=".$row["ID"]." WHERE Angebots_ID=0 AND Benutzer_ID=".$user3;
+				$mysqli->query($stmt);
+			}
+		}
+		
+		$mysqli->close();
 	}
-	
-	$mysqli->close();
 ?>
 
 <p> Wohnung erfolgreich eingestellt</p>
@@ -47,6 +90,7 @@ else{
 ?>
 <form name="form" action="./index.php?click=offer" method="post">
 <div>
+	<p>Bitte füllen Sie alle Felder aus</p>
 	<p><label for="stadtteil"> Stadtteil</html></p>
 	<select id="stadtteil" name="f[stadtteil]" type="text">
 		<option>Stuttgart-Mitte</option>

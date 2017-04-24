@@ -1,0 +1,81 @@
+<?php
+//This code runs if the form has been submitted
+if (isset($_POST['submit']))
+{
+
+// check for valid email address
+$email = $_POST['remail'];
+if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
+     $error[] = 'Please enter a valid email address';
+}
+
+include("../../zugriffWE.php");
+if ($mysqli->connect_error) {
+	$message['error'] = 'Datenbankverbindung fehlgeschlagen: ' . $mysqli->connect_error;
+}
+
+// checks if the username is in use
+$check = mysql_query("SELECT mail FROM Benutzer WHERE email = '$email'")or die(mysql_error());
+$check2 = mysql_num_rows($check);
+
+//if the name exists it gives an error
+if ($check2 == 0) {
+$error[] = 'Ein Account mit dieser Email-Adresse konnte leider nicht gefunden werden';
+}
+
+// if no errors then carry on
+if (!$error) {
+
+$query = mysql_query("SELECT username FROM Benutzer WHERE email = '$email' ")or die (mysql_error());
+$r = mysql_fetch_object($query);
+
+//create a new random password
+
+$password = substr(md5(uniqid(rand(),1)),3,10);
+//encrypted version for database entry
+$salt = ''; 
+for ($i = 0; $i < 22; $i++) { 
+	$salt .= substr('./ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789', mt_rand(0, 63), 1); 
+}
+$pass = crypt(
+	$password,
+	'$2a$10$' . $salt
+);
+
+//send email
+$to = "$email";
+$subject = "Passwort-Reset für Ihren Kontinuum-Account";
+$body = "Hallo $r->username, \n\n bei uns ist eine Anfrage wurde für diesen Account eine neues Passwort angefordert. \n\n Das neue Passwort lautet: $password \n\n Bitte melden Sie sich damit an und ändern Sie ihr Passwort. \n\n Viele Grüße,\n Ihr Kontinuum-Team";
+$additionalheaders = "From: <uv.kontinuum@gmail.com>rn";
+mail($to, $subject, $body, $additionalheaders);
+
+//update database
+$sql = mysql_query("UPDATE Benutzer SET password='$pass' WHERE email = '$email'")or die (mysql_error());
+$rsent = true;
+
+
+}// close errors
+}// close if form sent
+
+//show any errors
+if (!empty($error))
+{
+        $i = 0;
+        while ($i < count($error)){
+        echo "<div class='msg-error'>".$error[$i]."</div>";
+        $i ++;}
+}// close if empty errors
+
+
+if ($rsent == true){
+    echo "<p>Eine Email wurde an $email gesendet.</p>n";
+    } else {
+    echo "<p>Bitte gib die Email-Adresse an, die du für deinen Account bei der Registrierung angegeben hast.<br>Ein neues Passwort wird dann an diese Email-Adresse geschickt.</p>n";
+    }
+
+?>
+
+<form action="" method="post">
+<p>Email Address: <input type="text" name="remail" size="50" maxlength="255">
+<input type="submit" name="submit" value="Neues Passwort"></p>
+</form>

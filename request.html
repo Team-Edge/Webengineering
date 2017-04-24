@@ -3,22 +3,48 @@
 <?php
 if(isset($_SESSION['login'])){
 if(!empty($_POST)){
-	include("../../zugriffWE.php");
-	if ($mysqli->connect_error) {
-		$message['error'] = 'Datenbankverbindung fehlgeschlagen: ' . $mysqli->connect_error;
+	//Überprüfung ob alle Felder ausgefüllt sind
+	$unset=false;
+	//Stadtteil ist immer gesetzt, da er über ein Dropdownmenü ausgewählt wird
+	if(empty($_POST['f']['begin']){
+		$unset=true;
+		echo "Bitte den Beginn des Untervermietungs-Zeitraums angeben";
 	}
-	$stmt=$mysqli->prepare("INSERT INTO Gesuch (Ort, Anfang, Ende, Infotext, Benutzer_ID, MinPreis, MaxPreis)
-		VALUES(?,?,?,?,?,?,?)");
-	$stmt->bind_param('ssssidd',$stadtteil,$begin,$end,$info,$user,$minPrice,$maxPrice);
-	$stadtteil=strip_tags($_POST['f']['stadtteil']);
-	$begin=strip_tags($_POST['f']['begin']);
-	$end=strip_tags($_POST['f']['end']);
-	$info=strip_tags($_POST['f']['info']);
-	$user=strip_tags($_SESSION['user']['ID']);
-	$minPrice=strip_tags($_POST['f']['minPrice']);
-	$maxPrice=strip_tags($_POST['f']['maxPrice']);
-	$stmt->execute();
-	$mysqli->close();
+	if(empty($_POST['f']['end']){
+		$unset=true;
+		echo "Bitte das Ende des Untervermietungs-Zeitraums angeben";
+	}
+	if(empty($_POST['f']['info']){
+		$unset=true;
+		echo "Bitte einen Infotext eingeben";
+	}
+	if(empty($_POST['f']['minPrice']){
+		$unset=true;
+		echo "Bitte ein unteres Preislimit angeben";
+	}
+	if(empty($_POST['f']['maxPrice']){
+		$unset=true;
+		echo "Bitte ein oberes Preislimit angeben";
+	}
+	
+	if(!$unset){
+		include("../../zugriffWE.php");
+		if ($mysqli->connect_error) {
+			$message['error'] = 'Datenbankverbindung fehlgeschlagen: ' . $mysqli->connect_error;
+		}
+		$stmt=$mysqli->prepare("INSERT INTO Gesuch (Ort, Anfang, Ende, Infotext, Benutzer_ID, MinPreis, MaxPreis)
+			VALUES(?,?,?,?,?,?,?)");
+		$stmt->bind_param('ssssidd',$stadtteil,$begin,$end,$info,$user,$minPrice,$maxPrice);
+		$stadtteil=strip_tags($_POST['f']['stadtteil']);
+		$begin=strip_tags($_POST['f']['begin']);
+		$end=strip_tags($_POST['f']['end']);
+		$info=strip_tags($_POST['f']['info']);
+		$user=strip_tags($_SESSION['user']['ID']);
+		$minPrice=strip_tags($_POST['f']['minPrice']);
+		$maxPrice=strip_tags($_POST['f']['maxPrice']);
+		$stmt->execute();
+		$mysqli->close();
+	}
 ?>
 
 <p> Gesuch erfolgreich eingestellt</p>
@@ -58,7 +84,8 @@ else{
 		<option>Wagen</option>
 		<option>Weilimdorf</option>
 		<option>Zuffenhausen</option>
-	</select>	
+	</select>
+	<p>Bitte füllen Sie alle Felder aus</p>
 	<p><label for="infotext"> Infotext</html></p>
 	<textarea id="infotext" name="f[info]" type="text" cols="40" rows="5"></textarea>
 	<table>
