@@ -19,7 +19,7 @@ if ($mysqli->connect_error) {
 
 // checks if the username is in use
 $check = "SELECT mail FROM Benutzer WHERE email = $email'";
-$check2 = mysqli->query($check);
+$check2 = $mysqli->query($check);
 
 //if the name exists it gives an error
 if ($check2->num_rows == 0) {
@@ -31,7 +31,7 @@ $error[] = 'Ein Account mit dieser Email-Adresse konnte leider nicht gefunden we
 if (!$errors) {
 
 $query = "SELECT username FROM Benutzer WHERE email = '$email' ";
-$r = mysqli->query($query);
+$r = $mysqli->query($query);
 
 //create a new random password
 
@@ -54,7 +54,7 @@ $additionalheaders = "From: <uv.kontinuum@gmail.com>rn";
 mail($to, $subject, $body, $additionalheaders);
 
 //update database
-$sql = mysqli->query("UPDATE Benutzer SET password='$pass' WHERE email = '$email'");
+$sql = $mysqli->query("UPDATE Benutzer SET password='$pass' WHERE email = '$email'");
 $rsent = true;
 
 

@@ -44,7 +44,7 @@ if(!empty($_POST)){
 	}
 	
 	
-	if(!unset){
+	if(!$unset){
 		include("../../zugriffWE.php");
 		if ($mysqli->connect_error) {
 			$message['error'] = 'Datenbankverbindung fehlgeschlagen: ' . $mysqli->connect_error;
