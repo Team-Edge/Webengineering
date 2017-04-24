@@ -9,5 +9,7 @@
 	$stmt->bind_param('i',$uID);
 	$uID=strip_tags($_SESSION['user']['ID']);
 	$stmt->execute();
+
+	window.location.replace("index.php?click=logout");
 	
 ?>
