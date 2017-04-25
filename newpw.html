@@ -32,7 +32,6 @@ $error[] = 'Ein Account mit dieser Email-Adresse konnte leider nicht gefunden we
 // if no errors then carry on
 if (!$errors) {
 
-$r = $mysqli->query($query);
 $stmt = $mysqli->prepare("SELECT username FROM Benutzer WHERE mail = ?");
 $stmt->bind_param('s',$email);
 $stmt->execute();
