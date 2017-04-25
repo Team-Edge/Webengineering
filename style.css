@@ -1014,11 +1014,10 @@ footer .wrapper a{
 			width:300px;
 			font-size:30px;
 		}
-		profiles ul li{
-			width:300px;
-		}
-		profiles #del{
-			left:290px;
+	
+	#finddesc th{
+			font-size:35px;
+			min-width:0;
 		}
 		
 		 footer .wrapper
