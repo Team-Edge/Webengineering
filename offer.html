@@ -26,7 +26,7 @@ if(!empty($_POST)){
 		$unset=true;
 		echo "Bitte einen Preis angeben<br>";
 	}
-	if(empty($_POST['f']['titel'])){
+	if(empty($_POST['f']['title'])){
 		$unset=true;
 		echo "Bitte einen Anzeigetitel angeben<br>";
 	}
@@ -85,6 +85,11 @@ if(!empty($_POST)){
 <p> Wohnung erfolgreich eingestellt</p>
 
 <?php
+	}
+	else{
+		echo '<meta http-equiv="Refresh" content="5; URL=https://occaso.me/webengineering/index.php?click=offer">';
+		echo '<p>Ihr Angebot konnte nicht übernommen werden, Sie werden in 5 Sekunden automatisch auf die vorherige Seite weitergeleitet</p>';
+		echo '<a href="https://occaso.me/webengineering/index.php?click=offer">Wenn die automatische Weiterleitung nicht funktioniert, klicken Sie bitte hier</a>
 	}
 
 	}
