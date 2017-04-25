@@ -32,7 +32,7 @@ $error[] = 'Ein Account mit dieser Email-Adresse konnte leider nicht gefunden we
 // if no errors then carry on
 if (!$errors) {
 
-$stmt = $mysqli->prepare("SELECT username FROM Benutzer WHERE mail = ?");
+$stmt = $mysqli->prepare("SELECT Name FROM Benutzer WHERE mail = ?");
 $stmt->bind_param('s',$email);
 $stmt->execute();
 $r = $stmt->get_result();
@@ -53,7 +53,7 @@ $pass = crypt(
 //send email
 $to = "$email";
 $subject = "Passwort-Reset für Ihren Kontinuum-Account";
-$body = "Hallo $r->username, \n\n bei uns ist eine Anfrage wurde für diesen Account eine neues Passwort angefordert. \n\n Das neue Passwort lautet: $password \n\n Bitte melden Sie sich damit an und ändern Sie ihr Passwort. \n\n Viele Grüße,\n Ihr Kontinuum-Team";
+$body = "Hallo $r->Name, \n\n bei uns ist eine Anfrage wurde für diesen Account eine neues Passwort angefordert. \n\n Das neue Passwort lautet: $password \n\n Bitte melden Sie sich damit an und ändern Sie ihr Passwort. \n\n Viele Grüße,\n Ihr Kontinuum-Team";
 $additionalheaders = "From: <uv.kontinuum@gmail.com>rn";
 mail($to, $subject, $body, $additionalheaders);
 
