@@ -54,6 +54,10 @@ if(!empty($_POST)){
 <p>Klicken Sie bitte <a href="index.php?click=myRequests">HIER</a>, um eine Übersicht über Ihre Gesuche anzuzeigen. </p>
 
 <?php
+	}else{
+		echo '<meta http-equiv="Refresh" content="5; URL=https://occaso.me/webengineering/index.php?click=request">';
+		echo '<p>Ihre Anfrage konnte nicht übernommen werden, Sie werden in 5 Sekunden automatisch auf die vorherige Seite weitergeleitet</p>';
+		echo '<a href="https://occaso.me/webengineering/index.php?click=offer">Wenn die automatische Weiterleitung nicht funktioniert, klicken Sie bitte hier</a>
 	}
 
 	}
