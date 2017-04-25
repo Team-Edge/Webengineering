@@ -18,7 +18,7 @@ if ($mysqli->connect_error) {
 }
 
 // checks if the username is in use
-$stmt = $mysqli->prepare("SELECT mail FROM Benutzer WHERE email = ?");
+$stmt = $mysqli->prepare("SELECT mail FROM Benutzer WHERE mail = ?");
 $stmt->bind_param('s',$email);
 $check = $stmt->execute();
 $check2 = $check->get_result();
@@ -33,7 +33,7 @@ $error[] = 'Ein Account mit dieser Email-Adresse konnte leider nicht gefunden we
 if (!$errors) {
 
 $r = $mysqli->query($query);
-$stmt = $mysqli->prepare("SELECT username FROM Benutzer WHERE email = ?");
+$stmt = $mysqli->prepare("SELECT username FROM Benutzer WHERE mail = ?");
 $stmt->bind_param('s',$email);
 $check = $stmt->execute();
 $r = $check->get_result();
@@ -59,7 +59,7 @@ $additionalheaders = "From: <uv.kontinuum@gmail.com>rn";
 mail($to, $subject, $body, $additionalheaders);
 
 //update database
-$stmt = $mysqli->prepare("UPDATE Benutzer SET password= ? WHERE email = ?");
+$stmt = $mysqli->prepare("UPDATE Benutzer SET password= ? WHERE mail = ?");
 $stmt->bind_param('s',$pass);
 $stmt->bind_param('s',$email);
 $mysqli->execute($stmt);
