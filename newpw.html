@@ -63,8 +63,7 @@ mail($to, $subject, $body, $additionalheaders);
 
 //update database
 $stmt = $mysqli->prepare("UPDATE Benutzer SET Passwort = ? WHERE Mail = ?");
-$stmt->bind_param('s',$pass);
-$stmt->bind_param('s',$email);
+$stmt->bind_param('ss',$pass,$email);
 $stmt->execute();
 $rsent = true;
 
