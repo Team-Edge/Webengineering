@@ -8,7 +8,7 @@ if (isset($_POST['submit']))
 // check for valid email address
 $email = $_POST['remail'];
 if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
-     $error[] = 'Please enter a valid email address';
+     $error[] = 'Die Emailadresse stimmt nicht';
 	 $errors=true;
 }
 
