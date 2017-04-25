@@ -72,10 +72,14 @@ h2{
 a
 {
         text-decoration:none;
-        color:inherit;
+        color:red;
         
 }
-
+a:hover
+{
+        text-decoration:underline;
+        
+}
 strong
 {
         font-weight:bold;
@@ -149,10 +153,11 @@ nav ul li
 		background-color:#b3b3b3;
 }
 
-nav ul li a
+nav ul a
 {
         font-family: 'Open Sans', sans-serif;
         text-transform:uppercase;
+	color:black;
 		
         
 }
