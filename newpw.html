@@ -20,11 +20,11 @@ if ($mysqli->connect_error) {
 // checks if the username is in use
 $stmt = $mysqli->prepare("SELECT mail FROM Benutzer WHERE mail = ?");
 $stmt->bind_param('s',$email);
-$check = $stmt->execute();
-$check2 = $check->get_result();
+$stmt->execute();
+$check = $stmt->get_result();
 
 //if the name exists it gives an error
-if ($check2->num_rows == 0) {
+if ($check->num_rows == 0) {
 $errors=true;
 $error[] = 'Ein Account mit dieser Email-Adresse konnte leider nicht gefunden werden';
 }
@@ -35,8 +35,8 @@ if (!$errors) {
 $r = $mysqli->query($query);
 $stmt = $mysqli->prepare("SELECT username FROM Benutzer WHERE mail = ?");
 $stmt->bind_param('s',$email);
-$check = $stmt->execute();
-$r = $check->get_result();
+$stmt->execute();
+$r = $stmt->get_result();
 
 //create a new random password
 
@@ -62,7 +62,7 @@ mail($to, $subject, $body, $additionalheaders);
 $stmt = $mysqli->prepare("UPDATE Benutzer SET password= ? WHERE mail = ?");
 $stmt->bind_param('s',$pass);
 $stmt->bind_param('s',$email);
-$mysqli->execute($stmt);
+$stmt->execute();
 $rsent = true;
 
 
