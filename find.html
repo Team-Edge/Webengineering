@@ -15,7 +15,7 @@ if(!empty($_POST)){
 		$stmt->execute();
 		$result = $stmt->get_result();
 		if($result->num_rows == 0) {
-			echo "<p> Keine Angebote gefunden!</p>"
+			echo "<p> Keine Angebote gefunden!</p>";
 		}
 		foreach($result as $row){
 				echo "<a href='index.php?click=object&n=".$row['ID']."'><article id='art'>";
@@ -42,7 +42,7 @@ if(!empty($_POST)){
 		$stmt->execute();
 		$result = $stmt->get_result();
 		if($result->num_rows == 0) {
-			echo "<p> Keine Angebote gefunden!</p>"
+			echo "<p> Keine Angebote gefunden!</p>";
 		}
 		foreach($result as $row){
 			echo "<a href='index.php?click=requestinfo&n=".$row['ID']."'><article id='art'><div class=src><p>".$row['Ort']."</p></div><div style=max-width:860px;><div class=desc><div id='finddesc2'><table><tr><th>".$row['MinPreis']."€</th><th>".$row['MaxPreis']."€</th><th>".$row['Anfang']."</th><th>".$row['Ende']."</th></tr><tr><td>Minimal</td><td>Maximal</td><td>Einzug</td><td>Auszug</td></tr></table></div></div><div style=clear:left;></div></article></a>";
